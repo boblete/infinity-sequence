@@ -1,6 +1,7 @@
 import React from 'react';
 import Stave from './score/stave'
 import Dropdown from 'react-dropdown'
+import SheetMusic from './sheetRenderer';
 import {convertMidiToNote,convertNoteToMidi} from '../utils/helpers'
 import Engine from './engine/engine'
 /* 
@@ -86,28 +87,34 @@ const defaultOption = options[0]
         let { staveVisible,options ,defaultOption} = this.state;
         let { actions, visibleInstrument, volume, inputMode, registerOfflineHook, registerOnlineHook } = this.props;
         let _onSelect = this._onSelect
+
         return (
             <div className='is-container'>
-            <h1>Infinity series</h1>
-            <div className='span1'>
-            <Dropdown options={options} onChange={(e) =>this._onSelect(e)} value={defaultOption} placeholder="Select an option" />
-            </div>
-             <div className='series'>
-            { this.renderSeries()
-            }
-            </div>
-            
-            { staveVisible && (
-                    <Stave 
-                        
-                        {...this.props}
-                        {...this.state}
-                    />
-                ) } 
-            <Engine 
-                {...this.props}
-                {...this.state}
-            />
+                <h1>Infinity series</h1>
+                
+                <div className='span1'>
+                    <Dropdown options={options} onChange={(e) =>this._onSelect(e)} value={defaultOption} placeholder="Select an option" />
+                </div>
+
+                <div className='series'>
+                    { this.renderSeries() }
+                </div>
+
+                <div className="vexFlow">
+                    <SheetMusic notes={this.state.noteContainer}/>
+                </div>
+                
+                {/* { staveVisible && (
+                        <Stave 
+                            
+                            {...this.props}
+                            {...this.state}
+                        />
+                    ) } 
+                <Engine 
+                    {...this.props}
+                    {...this.state}
+                /> */}
             </div>
         )
     }
