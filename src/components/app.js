@@ -37,7 +37,9 @@ class App extends React.Component {
         startNote:0,
         currentNote:60,
         currentOption:'C',
-        noteContainer:[]
+        noteContainer:[],
+        durationValue:"4n",
+        durationValue2:"1n"
     }
 
     /*
@@ -56,7 +58,7 @@ const defaultOption = options[0]
 
     componentDidUpdate(){
         this.engine.stop();
-        this.engine.play(this.state.noteContainer)
+        this.engine.play(this.state.noteContainer,this.state.durationValue)
     }
 
     componentWillUpdate(nextProps,nextState){
@@ -144,6 +146,15 @@ const defaultOption = options[0]
         let totalNotes = e
         this.setState({totalNotes , totalNotes});
     }
+    _handleChange(e){
+
+     this.setState({durationValue: e.target.value});
+    }
+     _handleChange2(e){
+
+     this.setState({durationValue2: e.target.value});
+    }
+    
     render() {
         let { noteContainer,staveVisible,options ,defaultOption,totalNotes,startNote,currentOption,octaveOptions,currentOctaveOption,intervalOptions,currentIntervalOption} = this.state;
         let { actions, visibleInstrument, volume, inputMode, registerOfflineHook, registerOnlineHook } = this.props;
@@ -197,6 +208,12 @@ const defaultOption = options[0]
                                   +
                                 </button>
                               </form>}/>
+
+
+                     <p>duration1:</p>
+                     <textarea value={this.state.durationValue} onChange={(e)=>this._handleChange(e)} />        
+                     <p>duration2:</p>
+                     <textarea value={this.state.durationValue2} onChange={(e)=>this._handleChange2(e)} />         
                 </div>
                 <div className='series'>
                     { this.renderSeries() }
