@@ -125,39 +125,24 @@ const defaultOption = options[0]
         console.log('render');
         return (
             <div className='is-container'>
-            <h1>Infinity series</h1>
-            <div className='span1'>
-            <p>key:</p>
-            <Dropdown options={options} onChange={(e) =>this._onSelect(e)} value={currentOption} placeholder="Select an option" />
-            <p>octave:</p>
-            <Dropdown options={octaveOptions} onChange={(e) =>this._onSelectOctave(e)} value={""+currentOctaveOption} placeholder="Select an option" />
-            <p>interval:</p>
-            <Dropdown options={intervalOptions} onChange={(e) =>this._onSelectInterval(e)} value={""+currentIntervalOption} placeholder="Select an option" />
-           
-            <p>start:</p>
-            <p>length:</p>
-            </div>
-             <div className='series'>
-            { this.renderSeries()
-            }
-            </div>
-            { /* <div className="vexFlow">
+                <h1>Infinity series</h1>
+                <div className='span1'>
+                    <p>key:</p>
+                    <Dropdown options={options} onChange={(e) =>this._onSelect(e)} value={currentOption} placeholder="Select an option" />
+                    <p>octave:</p>
+                    <Dropdown options={octaveOptions} onChange={(e) =>this._onSelectOctave(e)} value={""+currentOctaveOption} placeholder="Select an option" />
+                    <p>interval:</p>
+                    <Dropdown options={intervalOptions} onChange={(e) =>this._onSelectInterval(e)} value={""+currentIntervalOption} placeholder="Select an option" />
+                
+                    <p>start:</p>
+                    <p>length:</p>
+                </div>
+                <div className='series'>
+                    { this.renderSeries() }
+                </div>
+                <div className="vexFlow">
                     <SheetMusic notes={this.state.noteContainer}/>
                 </div>
-           
-                
-                {/* { staveVisible && (
-                        <Stave 
-                            
-                            {...this.props}
-                            {...this.state}
-                        />
-                    ) } 
-                <Engine 
-                    {...this.props}
-                    {...this.state}
-                /> */}
-
             </div>
         )
     }
