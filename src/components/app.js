@@ -27,7 +27,8 @@ class App extends React.Component {
         defaultOption:NOTES[0],
         octaveOptions:OCTAVES,
         currentOctaveOption:OCTAVES[3],
-
+        intervalOptions:OCTAVES,
+        currentIntervalOption:OCTAVES[0],
         octaves:OCTAVES,
         defaultOctaves:OCTAVES[3],
         totalNotes:100,
@@ -60,7 +61,11 @@ const defaultOption = options[0]
         }
         if(nextState.currentOctaveOption!==this.state.currentOctaveOption){
             this.state.currentOctaveOption=nextState.currentOctaveOption;
-             this.getSeries();
+            this.getSeries();
+        }
+         if(nextState.currentIntervalOption!==this.state.currentIntervalOption){
+            this.state.currentIntervalOption=nextState.currentIntervalOption;
+            this.getSeries();
         }
     }
     getSeries(){
@@ -107,8 +112,13 @@ const defaultOption = options[0]
         let currentOctaveOption = e.value;
         this.setState({currentOctaveOption , currentOctaveOption}, this.getSeries());
     }
+     _onSelectInterval(e){
+        console.log(e,this);
+        let currentIntervalOption = e.value;
+        this.setState({currentIntervalOption , currentIntervalOption}, this.getSeries());
+    }
     render() {
-        let { staveVisible,options ,defaultOption,currentOption,octaveOptions,currentOctaveOption} = this.state;
+        let { staveVisible,options ,defaultOption,currentOption,octaveOptions,currentOctaveOption,intervalOptions,currentIntervalOption} = this.state;
         let { actions, visibleInstrument, volume, inputMode, registerOfflineHook, registerOnlineHook } = this.props;
         let _onSelect = this._onSelect
 
@@ -121,8 +131,9 @@ const defaultOption = options[0]
             <Dropdown options={options} onChange={(e) =>this._onSelect(e)} value={currentOption} placeholder="Select an option" />
             <p>octave:</p>
             <Dropdown options={octaveOptions} onChange={(e) =>this._onSelectOctave(e)} value={""+currentOctaveOption} placeholder="Select an option" />
-           
             <p>interval:</p>
+            <Dropdown options={intervalOptions} onChange={(e) =>this._onSelectInterval(e)} value={""+currentIntervalOption} placeholder="Select an option" />
+           
             <p>start:</p>
             <p>length:</p>
             </div>
