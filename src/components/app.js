@@ -28,6 +28,7 @@ class App extends React.Component {
         defaultOctaves:OCTAVES[3],
         totalNotes:100,
         startNote:0,
+        currentNote:60,
         currentOption:'C',
         noteContainer:[]
     }
@@ -44,7 +45,14 @@ const defaultOption = options[0]
 
         this.getSeries()
     }
-
+    componentWillUpdate(prevPops,prevState){
+        console.log(prevState,this.state);
+        if(prevState.currentOption!=this.state.currentOption){
+            console.log('test')
+            //this.setState()
+            this.renderSeries();
+        }
+    }
     getSeries(){
         var pn = [0,1]
         var endSeries = this.state.startNote+ this.state.totalNotes;
@@ -57,18 +65,19 @@ const defaultOption = options[0]
             pn[2*i +1] = pn[2*i -1] + (pn[i] - pn[i-1])
 
         */
-
-        var startNote=convertNoteToMidi(this.state.currentOption + OCTAVES[3]);
-        this.setState({startNote, startNote});
+        console.log(this.state.currentOption , OCTAVES[3])
+        var currentNote=convertNoteToMidi(this.state.currentOption + OCTAVES[3]);
+        this.setState({currentNote, currentNote});
         console.log(this.state.startNote);
-        var noteContainer = []
+        var noteContainer = [];
         for(var j = this.state.startNote ; j<=endSeries;j++  ){
-            noteContainer.push(convertMidiToNote(startNote - pn[j]));
+            noteContainer.push(convertMidiToNote(currentNote - pn[j]));
         }
-        console.log(noteContainer);
+        //console.log(noteContainer);
         this.setState({noteContainer , noteContainer});
-        this.renderSeries();
+      //  this.renderSeries();
     }
+  
     renderSeries() {
         let s = ""
         let noteContainer = this.state.noteContainer;
@@ -83,14 +92,14 @@ const defaultOption = options[0]
         this.setState({currentOption , currentOption}, this.getSeries());
     }
     render() {
-        let { staveVisible,options ,defaultOption} = this.state;
+        let { staveVisible,options ,defaultOption,currentOption} = this.state;
         let { actions, visibleInstrument, volume, inputMode, registerOfflineHook, registerOnlineHook } = this.props;
         let _onSelect = this._onSelect
         return (
             <div className='is-container'>
             <h1>Infinity series</h1>
             <div className='span1'>
-            <Dropdown options={options} onChange={(e) =>this._onSelect(e)} value={defaultOption} placeholder="Select an option" />
+            <Dropdown options={options} onChange={(e) =>this._onSelect(e)} value={currentOption} placeholder="Select an option" />
             </div>
              <div className='series'>
             { this.renderSeries()
@@ -103,11 +112,7 @@ const defaultOption = options[0]
                         {...this.props}
                         {...this.state}
                     />
-                ) } 
-            <Engine 
-                {...this.props}
-                {...this.state}
-            />
+            )}
             </div>
         )
     }
