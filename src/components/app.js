@@ -54,7 +54,7 @@ const defaultOption = options[0]
             pn[2*i +1] = pn[2*i -1] + (pn[i] - pn[i-1])
 
         */
-        var startNote=convertNoteToMidi(this.state.currentOption);
+        var startNote=convertNoteToMidi(this.state.currentOption + 4);
         console.log(startNote)
         var noteContainer = []
         for(var j = this.state.startNote ; j<=endSeries;j++  ){
