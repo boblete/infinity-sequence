@@ -25,6 +25,9 @@ class App extends React.Component {
         staveVisible: false,
         options:NOTES,
         defaultOption:NOTES[0],
+        octaveOptions:OCTAVES,
+        currentOctaveOption:OCTAVES[3],
+
         octaves:OCTAVES,
         defaultOctaves:OCTAVES[3],
         totalNotes:100,
@@ -55,6 +58,10 @@ const defaultOption = options[0]
             this.getSeries();
             //this.renderSeries();
         }
+        if(nextState.currentOctaveOption!==this.state.currentOctaveOption){
+            this.state.currentOctaveOption=nextState.currentOctaveOption;
+             this.getSeries();
+        }
     }
     getSeries(){
         var pn = [0,1]
@@ -69,7 +76,7 @@ const defaultOption = options[0]
 
         */
         console.log(this.state.currentOption , OCTAVES[3])
-        var currentNote=convertNoteToMidi(this.state.currentOption + OCTAVES[3]);
+        var currentNote=convertNoteToMidi(this.state.currentOption + this.state.currentOctaveOption);
         this.setState({currentNote, currentNote});
         console.log(this.state.startNote);
         var noteContainer = [];
@@ -95,8 +102,13 @@ const defaultOption = options[0]
         let currentOption = e.value;
         this.setState({currentOption , currentOption}, this.getSeries());
     }
+     _onSelectOctave(e){
+        console.log(e,this);
+        let currentOctaveOption = e.value;
+        this.setState({currentOctaveOption , currentOctaveOption}, this.getSeries());
+    }
     render() {
-        let { staveVisible,options ,defaultOption,currentOption} = this.state;
+        let { staveVisible,options ,defaultOption,currentOption,octaveOptions,currentOctaveOption} = this.state;
         let { actions, visibleInstrument, volume, inputMode, registerOfflineHook, registerOnlineHook } = this.props;
         let _onSelect = this._onSelect
 
@@ -105,13 +117,20 @@ const defaultOption = options[0]
             <div className='is-container'>
             <h1>Infinity series</h1>
             <div className='span1'>
+            <p>key:</p>
             <Dropdown options={options} onChange={(e) =>this._onSelect(e)} value={currentOption} placeholder="Select an option" />
+            <p>octave:</p>
+            <Dropdown options={octaveOptions} onChange={(e) =>this._onSelectOctave(e)} value={""+currentOctaveOption} placeholder="Select an option" />
+           
+            <p>interval:</p>
+            <p>start:</p>
+            <p>length:</p>
             </div>
              <div className='series'>
             { this.renderSeries()
             }
             </div>
-              <div className="vexFlow">
+            { /* <div className="vexFlow">
                     <SheetMusic notes={this.state.noteContainer}/>
                 </div>
            
