@@ -58,14 +58,17 @@ const defaultOption = options[0]
 
         */
         var startNote=convertNoteToMidi(this.state.currentOption + OCTAVES[3]);
+        this.setState({startNote, startNote});
+        console.log(this.state.startNote);
         var noteContainer = []
         for(var j = this.state.startNote ; j<=endSeries;j++  ){
-            noteContainer.push(convertMidiToNote(60 - pn[j]));
+            noteContainer.push(convertMidiToNote(startNote - pn[j]));
         }
+        console.log(noteContainer);
         this.setState({noteContainer , noteContainer});
         this.renderSeries();
     }
-    renderSeries(){
+    renderSeries() {
         let s = ""
         let noteContainer = this.state.noteContainer;
         for(var k = 0 ; k <noteContainer.length; k++){
