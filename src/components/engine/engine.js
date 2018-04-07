@@ -11,7 +11,6 @@ export default class Engine{
     play(notes){
         let that = this;
         this.seq = new Tone.Sequence(function(time, note){
-            //console.log(note);
             that.synth.triggerAttackRelease(note, "4n");
         //straight quater notes
     },notes, "4n");
