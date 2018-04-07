@@ -3272,6 +3272,10 @@ number-is-nan@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/number-is-nan/-/number-is-nan-1.0.1.tgz#097b602b53422a522c1afb8790318336941a011d"
 
+numeric-pattern@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/numeric-pattern/-/numeric-pattern-1.0.0.tgz#e916b720ec5065efb3a87cdc3ec3fb53950e161f"
+
 oauth-sign@~0.8.1, oauth-sign@~0.8.2:
   version "0.8.2"
   resolved "https://registry.yarnpkg.com/oauth-sign/-/oauth-sign-0.8.2.tgz#46a6ab7f0aead8deae9ec0565780b7d4efeb9d43"
@@ -3817,7 +3821,7 @@ promise@^7.1.1:
   dependencies:
     asap "~2.0.3"
 
-prop-types@^15.5.8:
+prop-types@^15.5.10, prop-types@^15.5.8:
   version "15.6.1"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.6.1.tgz#36644453564255ddda391191fb3a125cbdf654ca"
   dependencies:
@@ -3990,6 +3994,13 @@ react-select@^1.2.1:
     classnames "^2.2.4"
     prop-types "^15.5.8"
     react-input-autosize "^2.1.2"
+
+react-stepper-primitive@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/react-stepper-primitive/-/react-stepper-primitive-1.1.0.tgz#4d798458183f071927db3fb23e685bd9d77708ef"
+  dependencies:
+    numeric-pattern "^1.0.0"
+    prop-types "^15.5.10"
 
 react@^16.2.0:
   version "16.2.0"

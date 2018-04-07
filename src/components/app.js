@@ -48,7 +48,7 @@ const defaultOption = options[0]
     
     componentDidMount () {
 
-        this.getSeries()
+        this.getSeries();
     }
     componentWillUpdate(nextProps,nextState){
         console.log(nextState,this.state);
@@ -136,6 +136,7 @@ const defaultOption = options[0]
                     <Dropdown options={intervalOptions} onChange={(e) =>this._onSelectInterval(e)} value={""+currentIntervalOption} placeholder="Select an option" />
                 
                     <p>start:</p>
+
                     <p>length:</p>
                 </div>
                 <div className='series'>
