@@ -1,41 +1,32 @@
-import React from 'react';
+import Tone from 'tone';
 
-let Tone;
 
-export default class Engine extends React.Component {
+export default class Engine{
+    constructor(){
+        this.synth = new Tone.Synth();
+        this.synth.toMaster();
+        this.seq;
+    }
 
-    events = {};
-
-    componentDidMount() {
-        Tone = window.Tone;
+    play(notes){
+        let that = this;
+        console.log("Notes");
+        console.log(notes);
+        this.seq = new Tone.Sequence(function(time, note){
+            console.log(note)
+            that.synth.triggerAttackRelease(note, "4n");
+        //straight quater notes
+    },notes, "4n");
+        this.seq.loop = 0;
+        this.seq.start(0);
+        Tone.Transport.start();
 
     }
 
-    
-    componentWillReceiveProps({ notes }) {
-        if (notes !== this.props.notes) {
-            this.updateNotes(notes)
+    stop(){
+        if(typeof this.seq !== 'undefined'){
+            this.seq.stop();
+            Tone.Transport.stop();
         }
-    }
-
-    updateNotes(notes) {
-        for (let id of this.props.notes.keys()) {
-            if (!notes.has(id)) {
-                Tone.Transport.clear(this.events[id]);
-                delete this.events[id];
-            }
-        }
-
-        for (let { tick, key, duration, id } of notes.values()) {
-            if (Object.prototype.hasOwnProperty.call(this.events, id)) continue;
-
-            this.events[id] = Tone.Transport.schedule(time => {
-                this.props.synth.triggerNoteOnOff(key, time, duration);
-            }, `${tick}i`);
-        }
-    }
-
-    render() {
-        return null;
     }
 }

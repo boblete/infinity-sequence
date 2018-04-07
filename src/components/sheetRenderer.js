@@ -15,7 +15,7 @@ class SheetMusic extends React.Component {
 
     initNotesAsVexflowObjects(notes) {
         let vexFlowNotes = [];
-        
+
         notes.forEach((elem, index) => {
             let length = elem.length;
             let formattedNote = elem.substring(0, length-1) + "/" + elem.substring(length - 1);
@@ -28,13 +28,7 @@ class SheetMusic extends React.Component {
     }
 
     renderVexFlow() {
-        const chord = [new StaveNote({
-            keys: ["d/4"],
-            duration: "w",
-        })];
-        console.log(this.initNotesAsVexflowObjects(this.props.notes));
-
-        // const chord = this.initNotesAsVexflowObjects(this.props.notes);
+        const chord = this.initNotesAsVexflowObjects(this.props.notes);
 
         const svgContainer = document.createElement('div');
         const renderer = new Renderer(svgContainer, Renderer.Backends.SVG);
@@ -59,9 +53,16 @@ class SheetMusic extends React.Component {
 
         this.refs.outer.appendChild(svgContainer);
     }
+    
+    clearOuterRef() {
+        this.refs.outer.innerHTML = "";
+    }
 
-    componentDidMount() {
-        this.renderVexFlow()
+    componentDidUpdate() {
+        if (this.props.notes.length > 0) {
+            this.clearOuterRef()
+            this.renderVexFlow()
+        }
     }
 
     render() {
@@ -72,6 +73,7 @@ class SheetMusic extends React.Component {
                 borderRadius: 10,
                 display: "inline-block",
             }}>
+                
             </div>
         );
     }
