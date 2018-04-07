@@ -13,7 +13,7 @@ export default class Engine{
         console.log("Notes");
         console.log(notes);
         this.seq = new Tone.Sequence(function(time, note){
-            console.log(note)
+            //console.log(note)
             that.synth.triggerAttackRelease(note, "4n");
         //straight quater notes
     },notes, "4n");

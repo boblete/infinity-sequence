@@ -2,8 +2,9 @@ import React from 'react';
 import Stave from './score/stave'
 import Dropdown from 'react-dropdown'
 import SheetMusic from './sheetRenderer';
-import {convertMidiToNote,convertNoteToMidi} from '../utils/helpers'
-import Engine from './engine/engine'
+import {convertMidiToNote,convertNoteToMidi} from '../utils/helpers';
+import Engine from './engine/engine';
+import Stepper from 'react-stepper-primitive'
 /*
 The Danish composer Per Nørgård's "infinity sequence",
 invented in an attempt to unify in a perfect way repetition and variation:
@@ -122,11 +123,16 @@ const defaultOption = options[0]
         let currentIntervalOption = e.value;
         this.setState({currentIntervalOption , currentIntervalOption}, this.getSeries());
     }
-
+    _onSelectStart(e){
+        console.log(e)
+    }
+     _onSelectLength(e){
+        console.log(e)
+    }
     render() {
         let { noteContainer,staveVisible,options ,defaultOption,currentOption,octaveOptions,currentOctaveOption,intervalOptions,currentIntervalOption} = this.state;
         let { actions, visibleInstrument, volume, inputMode, registerOfflineHook, registerOnlineHook } = this.props;
-        let _onSelect = this._onSelect
+        //let _onSelect = this._onSelect
 
         console.log('render');
         return (
@@ -141,8 +147,41 @@ const defaultOption = options[0]
                     <Dropdown options={intervalOptions} onChange={(e) =>this._onSelectInterval(e)} value={""+currentIntervalOption} placeholder="Select an option" />
 
                     <p>start:</p>
-
+                    <Stepper 
+    min={1}
+    max={100} onChange={(e)=> this._onSelectStart(e)} render={({
+      getFormProps,
+      getInputProps,
+      getIncrementProps,
+      getDecrementProps
+    }) =>
+      <form {...getFormProps()}>
+        <button className='my-button' {...getDecrementProps()}>
+         -
+        </button>
+        <input className='my-step-input' {...getInputProps()} />
+        <button className='my-button' {...getIncrementProps()}>
+          +
+        </button>
+      </form>}/>
                     <p>length:</p>
+                     <Stepper 
+    min={1}
+    max={200} onChange={(e)=> this._onSelectLength(e)} value={50} render={({
+      getFormProps,
+      getInputProps,
+      getIncrementProps,
+      getDecrementProps
+    }) =>
+      <form {...getFormProps()}>
+        <button className='my-button' {...getDecrementProps()}>
+         -
+        </button>
+        <input className='my-step-input' {...getInputProps()} />
+        <button className='my-button' {...getIncrementProps()}>
+          +
+        </button>
+      </form>}/>
                 </div>
                 <div className='series'>
                     { this.renderSeries() }
