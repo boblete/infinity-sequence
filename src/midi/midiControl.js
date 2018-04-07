@@ -11,16 +11,15 @@ class MidiControl {
         this.midiIn = input;
         this.midiOut = output;
         this.gridButtons = gridButtons;
-
         this.buttonIntensity = [0, 1];
         this.buttonBlink = [0, 1, 2];
         this.launchButtonColor = [0, 1, 2, 3];
 		this.currentChannel = 0;
 		this.division = 32;
         this.velocitySensitive = false;
-		
+
         this.channelColourArray  = [this.buttonLightCode(1, 0, 2),this.buttonLightCode(1, 0, 2),  this.buttonLightCode(1, 0, 3), this.buttonLightCode(1, 0, 1)];
-		this.blinkColour = this.buttonLightCode(1, 2, 2)
+		this.blinkColour = this.buttonLightCode(1, 2, 2);
         this.flashButtons();
     }
 
@@ -41,7 +40,7 @@ class MidiControl {
             let timeSend = window.performance.now() + (10 * parseInt(i));
             this.midiOut.send(data1);
             this.midiOut.send(data2, timeSend);
-		})
+		});
     }
 
 	highlightStep(step,on,mode) {
@@ -74,9 +73,6 @@ class MidiControl {
     }
 
 	changeChannel(channel) {
-	//	this.currentChannel = channel;
-	//	this.updateButtons();
-     //   this.setCurrentChannel(channel);
 	}
 
 	noteOn(note, velocity) {
@@ -116,6 +112,7 @@ class MidiControl {
     clearButtons() {
         this.gridButtons.forEach(button => this.midiOut.send([144, button, 0]));
     }
+
 }
 
 export default MidiControl;

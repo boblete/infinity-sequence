@@ -43,18 +43,18 @@ export default function initMidiDevices(actions) {
         midiDevices = [];
         let inputs = midi.inputs.values();
         let outputs = midi.outputs.values();
-       
+
         for (let input of inputs) {
             logInput(input);
 
             let output = outputs.next().value;
-            
+
             if(output.name){
                 while (output.name !== input.name && !input.done) {
                     output = outputs.next().value;
                     if(output===undefined){
                         return;
-                    };
+                    }
                 }
             }
 
@@ -68,7 +68,7 @@ export default function initMidiDevices(actions) {
                 midiDevices.push(launchPad);
                 input.onmidimessage = launchPad.onMIDIMessage;
                 return;
-            }  
+            }
         }
     }
 
@@ -78,21 +78,4 @@ export default function initMidiDevices(actions) {
             "' version: '" + input.version + "']");
     }
 
-    function highlightStep(step,on,mode) {
-        midiDevices.forEach(device => device.highlightStep(step,on,mode));
-    }
-
-    function setGridData(gridData) {
-        midiDevices.forEach(device => device.setGridData(gridData));
-    }
-
-    function setDivision(division) {
-        midiDevices.forEach(device => device.setDivision(division));
-    }
-
-    return {
-        highlightStep,
-        setGridData,
-        setDivision
-    }
 }

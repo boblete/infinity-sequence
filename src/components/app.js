@@ -1,10 +1,12 @@
 import React from 'react';
-import Stave from './score/stave'
-import Dropdown from 'react-dropdown'
+import Stave from './score/stave';
+import Dropdown from 'react-dropdown';
 import SheetMusic from './sheetRenderer';
 import {convertMidiToNote,convertNoteToMidi} from '../utils/helpers';
 import Engine from './engine/engine';
-import Stepper from 'react-stepper-primitive'
+import Midi from '../midi/midi';
+
+import Stepper from 'react-stepper-primitive';
 /*
 The Danish composer Per Nørgård's "infinity sequence",
 invented in an attempt to unify in a perfect way repetition and variation:
@@ -18,7 +20,8 @@ const OCTAVES = [1,2,3,4,5,6,7,8];
 class App extends React.Component {
      constructor(props) {
         super();
-        this.engine = new Engine();
+        this.midi = new Midi();
+        //this.engine = new Engine();
      }
     state = {
         staveVisible: false,
@@ -52,8 +55,9 @@ const defaultOption = options[0]
 
 
     componentDidUpdate(){
-        this.engine.stop();
-        this.engine.play(this.state.noteContainer)
+        this.midi.play(this.state.noteContainer)
+        //this.engine.stop();
+        //this.engine.play(this.state.noteContainer)
     }
 
     componentWillUpdate(nextProps,nextState){
@@ -158,7 +162,7 @@ const defaultOption = options[0]
                     <Dropdown options={intervalOptions} onChange={(e) =>this._onSelectInterval(e)} value={""+currentIntervalOption} placeholder="Select an option" />
 
                     <p>start:</p>
-                    <Stepper 
+                    <Stepper
                         min={0}
                         max={100} value = {startNote} onChange={(e)=> this._onSelectStart(e)} render={({
                           getFormProps,
@@ -177,7 +181,7 @@ const defaultOption = options[0]
                           </form>}/>
 
                      <p>length:</p>
-                     <Stepper 
+                     <Stepper
                             min={1}
                             max={200} value={totalNotes} onChange={(e)=> this._onSelectLength(e)}  render={({
                               getFormProps,
