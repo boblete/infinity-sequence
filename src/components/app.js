@@ -57,6 +57,7 @@ const defaultOption = options[0]
             pn[2*i +1] = pn[2*i -1] + (pn[i] - pn[i-1])
 
         */
+
         var startNote=convertNoteToMidi(this.state.currentOption + OCTAVES[3]);
         this.setState({startNote, startNote});
         console.log(this.state.startNote);
