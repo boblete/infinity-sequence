@@ -1,5 +1,5 @@
-import Vex from 'vexflow';
 import React from 'react';
+import Vex from 'vexflow';
 // import { convertMidiToNote } from './utils/helpers';
 
 const { Renderer, Stave, StaveNote, StaveTie, Voice, Formatter, Beam, Accidental } = Vex.Flow;
@@ -7,18 +7,37 @@ const { Renderer, Stave, StaveNote, StaveTie, Voice, Formatter, Beam, Accidental
 class SheetMusic extends React.Component {
     constructor(props) {
         super(props);
-        this.vexFlowRef = React.createRef();
     }
 
     getNotes() {
         return this.props.notes;
     }
 
-    componentDidMount() {
+    initNotesAsVexflowObjects(notes) {
+        let vexFlowNotes = [];
+        
+        notes.forEach((elem, index) => {
+            let length = elem.length;
+            let formattedNote = elem.substring(0, length-1) + "/" + elem.substring(length - 1);
+            vexFlowNotes.push(new StaveNote({
+                keys: [formattedNote],
+                duration: "w",
+            }));
+        });
+        return vexFlowNotes;
+    }
+
+    renderVexFlow() {
         const chord = [new StaveNote({
-            keys: ["d/4", "f#/4"],
+            keys: ["d/4"],
             duration: "w",
         })];
+<<<<<<< HEAD
+=======
+        console.log(this.initNotesAsVexflowObjects(this.props.notes));
+
+        // const chord = this.initNotesAsVexflowObjects(this.props.notes);
+>>>>>>> 632d64efe9a56583f9b77ea4ea206cf049a5b611
 
         const svgContainer = document.createElement('div');
         const renderer = new Renderer(svgContainer, Renderer.Backends.SVG);
@@ -44,14 +63,20 @@ class SheetMusic extends React.Component {
         this.refs.outer.appendChild(svgContainer);
     }
 
+    componentDidMount() {
+        this.renderVexFlow()
+    }
+
     render() {
-        return (<div ref="outer" style={{
-            border: "2px blue solid",
-            padding: 10,
-            borderRadius: 10,
-            display: "inline-block",
-        }}>
-        </div>);
+        return (
+            <div ref="outer" style={{
+                border: "2px blue solid",
+                padding: 10,
+                borderRadius: 10,
+                display: "inline-block",
+            }}>
+            </div>
+        );
     }
 }
 
