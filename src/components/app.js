@@ -15,6 +15,7 @@ a(2n) = -a(n), a(2n+1) = a(n) + 1, a(0)=0.
 
 
 const NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+const OCTAVES = [1,2,3,4,5,6,7,8];
 class App extends React.Component {
      constructor(props) {
         super();
@@ -23,6 +24,8 @@ class App extends React.Component {
         staveVisible: false,
         options:NOTES,
         defaultOption:NOTES[0],
+        octaves:OCTAVES,
+        defaultOctaves:OCTAVES[3],
         totalNotes:100,
         startNote:0,
         currentOption:'C',
@@ -54,14 +57,15 @@ const defaultOption = options[0]
             pn[2*i +1] = pn[2*i -1] + (pn[i] - pn[i-1])
 
         */
-        var startNote=convertNoteToMidi(this.state.currentOption + 4);
-        console.log(startNote)
+
+        var startNote=convertNoteToMidi(this.state.currentOption + OCTAVES[3]);
+
         var noteContainer = []
         for(var j = this.state.startNote ; j<=endSeries;j++  ){
             noteContainer.push(convertMidiToNote(60 - pn[j]));
         }
         this.setState({noteContainer , noteContainer});
-        
+        this.renderSeries();
     }
     renderSeries(){
         let s = ""
@@ -74,8 +78,7 @@ const defaultOption = options[0]
     _onSelect(e){
         console.log(e,this);
         let currentOption = e.value;
-        this.setState({currentOption , currentOption});
-        this.getSeries();
+        this.setState({currentOption , currentOption}, this.getSeries());
     }
     render() {
         let { staveVisible,options ,defaultOption} = this.state;
