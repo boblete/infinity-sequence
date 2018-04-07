@@ -57,9 +57,9 @@ const defaultOption = options[0]
     }
 
     componentWillUpdate(nextProps,nextState){
-        console.log(nextState,this.state);
+        // console.log(nextState,this.state);
         if(nextState.currentOption!==this.state.currentOption){
-            console.log('nextState',nextState.currentOption,this.state.currentOption);
+            // console.log('nextState',nextState.currentOption,this.state.currentOption);
             //this.setState()
             this.state.currentOption=nextState.currentOption
             this.getSeries();
@@ -93,16 +93,16 @@ const defaultOption = options[0]
             pn[2*i] = pn[2*i -2] - (pn[i] - pn[i-1])
             pn[2*i +1] = pn[2*i -1] + (pn[i] - pn[i-1])
         */
-        console.log(pn)
-        console.log(this.state.currentOption , OCTAVES[3])
+        // console.log(pn)
+        // console.log(this.state.currentOption , OCTAVES[3])
         var currentNote=convertNoteToMidi(this.state.currentOption + this.state.currentOctaveOption);
         this.setState({currentNote, currentNote});
-        console.log(pn);
+        // console.log(pn);
         var noteContainer = [];
         for(var j = this.state.startNote ; j<=endSeries;j++  ){
             noteContainer.push(convertMidiToNote(currentNote - pn[j]));
         }
-        //console.log(noteContainer);
+        console.log(noteContainer);
         this.setState({noteContainer , noteContainer});
       //  this.renderSeries();
     }
@@ -110,34 +110,34 @@ const defaultOption = options[0]
     renderSeries() {
         let s = ""
         let noteContainer = this.state.noteContainer;
-        console.log(this.state.noteContainer);
+        // console.log(this.state.noteContainer);
         for(var k = 0 ; k <noteContainer.length; k++){
             s += noteContainer[k]+ ", ";
         }
         return s;
     }
     _onSelect(e){
-        console.log(e,this);
+        // console.log(e,this);
         let currentOption = e.value;
         this.setState({currentOption , currentOption});
     }
      _onSelectOctave(e){
-        console.log(e,this);
+        // console.log(e,this);
         let currentOctaveOption = e.value;
         this.setState({currentOctaveOption , currentOctaveOption});
     }
      _onSelectInterval(e){
-        console.log(e,this);
+        // console.log(e,this);
         let currentIntervalOption = e.value;
         this.setState({currentIntervalOption , currentIntervalOption});
     }
     _onSelectStart(e){
-        console.log(e)
+        // console.log(e)
          let startNote = e
         this.setState({startNote , startNote});
     }
      _onSelectLength(e){
-        console.log(e)
+        // console.log(e)
         let totalNotes = e
         this.setState({totalNotes , totalNotes});
     }
@@ -145,7 +145,7 @@ const defaultOption = options[0]
         let { noteContainer,staveVisible,options ,defaultOption,totalNotes,startNote,currentOption,octaveOptions,currentOctaveOption,intervalOptions,currentIntervalOption} = this.state;
         let { actions, visibleInstrument, volume, inputMode, registerOfflineHook, registerOnlineHook } = this.props;
         //let _onSelect = this._onSelect
-        console.log('render');
+        // console.log('render');
         return (
             <div className='is-container'>
                 <h1>Infinity series</h1>
@@ -199,7 +199,7 @@ const defaultOption = options[0]
                     { this.renderSeries() }
                 </div>
                 <div className="vexFlow">
-                    <SheetMusic notes={noteContainer}/>
+                    <SheetMusic notes={noteContainer} staveLength="25"/>
                 </div>
             </div>
         )
