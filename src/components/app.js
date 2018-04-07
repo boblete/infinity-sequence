@@ -17,7 +17,7 @@ const OCTAVES = [1,2,3,4,5,6,7,8];
 class App extends React.Component {
      constructor(props) {
         super();
-        this.engine = new Engine()
+        this.engine = new Engine();
      }
     state = {
         staveVisible: false,
@@ -45,8 +45,14 @@ const defaultOption = options[0]
 
     componentDidMount () {
         this.getSeries()
+    }
+
+
+    componentDidUpdate(){
+        this.engine.stop();
         this.engine.play(this.state.noteContainer)
     }
+
     componentWillUpdate(nextProps,nextState){
         console.log(nextState,this.state);
         if(nextState.currentOption!==this.state.currentOption){
@@ -113,6 +119,7 @@ const defaultOption = options[0]
         let currentIntervalOption = e.value;
         this.setState({currentIntervalOption , currentIntervalOption}, this.getSeries());
     }
+
     render() {
         let { staveVisible,options ,defaultOption,currentOption,octaveOptions,currentOctaveOption,intervalOptions,currentIntervalOption} = this.state;
         let { actions, visibleInstrument, volume, inputMode, registerOfflineHook, registerOnlineHook } = this.props;
@@ -129,7 +136,7 @@ const defaultOption = options[0]
             <Dropdown options={octaveOptions} onChange={(e) =>this._onSelectOctave(e)} value={""+currentOctaveOption} placeholder="Select an option" />
             <p>interval:</p>
             <Dropdown options={intervalOptions} onChange={(e) =>this._onSelectInterval(e)} value={""+currentIntervalOption} placeholder="Select an option" />
-           
+
             <p>start:</p>
             <p>length:</p>
             </div>

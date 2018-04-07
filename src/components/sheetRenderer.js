@@ -15,7 +15,7 @@ class SheetMusic extends React.Component {
 
     initNotesAsVexflowObjects(notes) {
         let vexFlowNotes = [];
-        
+
         notes.forEach((elem, index) => {
             let length = elem.length;
             let formattedNote = elem.substring(0, length-1) + "/" + elem.substring(length - 1);
@@ -32,12 +32,9 @@ class SheetMusic extends React.Component {
             keys: ["d/4"],
             duration: "w",
         })];
-<<<<<<< HEAD
-=======
-        console.log(this.initNotesAsVexflowObjects(this.props.notes));
+        //console.log(this.initNotesAsVexflowObjects(this.props.notes));
 
         // const chord = this.initNotesAsVexflowObjects(this.props.notes);
->>>>>>> 632d64efe9a56583f9b77ea4ea206cf049a5b611
 
         const svgContainer = document.createElement('div');
         const renderer = new Renderer(svgContainer, Renderer.Backends.SVG);
