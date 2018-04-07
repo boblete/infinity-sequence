@@ -73,6 +73,10 @@ const defaultOption = options[0]
             this.state.currentIntervalOption=nextState.currentIntervalOption;
             this.getSeries();
         }
+        if(nextState.totalNotes!==this.state.totalNotes){
+            this.state.totalNotes=nextState.totalNotes;
+            this.getSeries();
+        }
     }
     getSeries(){
         var pn = [0,this.state.currentIntervalOption]
@@ -128,12 +132,14 @@ const defaultOption = options[0]
     }
      _onSelectLength(e){
         console.log(e)
+        let totalNotes = e
+        this.setState({totalNotes , totalNotes});
+        
     }
     render() {
-        let { noteContainer,staveVisible,options ,defaultOption,currentOption,octaveOptions,currentOctaveOption,intervalOptions,currentIntervalOption} = this.state;
+        let { noteContainer,staveVisible,options ,defaultOption,totalNotes,startNote,currentOption,octaveOptions,currentOctaveOption,intervalOptions,currentIntervalOption} = this.state;
         let { actions, visibleInstrument, volume, inputMode, registerOfflineHook, registerOnlineHook } = this.props;
         //let _onSelect = this._onSelect
-
         console.log('render');
         return (
             <div className='is-container'>
@@ -148,40 +154,41 @@ const defaultOption = options[0]
 
                     <p>start:</p>
                     <Stepper 
-    min={1}
-    max={100} onChange={(e)=> this._onSelectStart(e)} render={({
-      getFormProps,
-      getInputProps,
-      getIncrementProps,
-      getDecrementProps
-    }) =>
-      <form {...getFormProps()}>
-        <button className='my-button' {...getDecrementProps()}>
-         -
-        </button>
-        <input className='my-step-input' {...getInputProps()} />
-        <button className='my-button' {...getIncrementProps()}>
-          +
-        </button>
-      </form>}/>
-                    <p>length:</p>
+                        min={1}
+                        max={100} value = {startNote} onChange={(e)=> this._onSelectStart(e)} render={({
+                          getFormProps,
+                          getInputProps,
+                          getIncrementProps,
+                          getDecrementProps
+                     }) =>
+                          <form {...getFormProps()}>
+                            <button className='my-button' {...getDecrementProps()}>
+                             -
+                            </button>
+                            <input className='my-step-input' {...getInputProps()} />
+                            <button className='my-button' {...getIncrementProps()}>
+                              +
+                            </button>
+                          </form>}/>
+
+                     <p>length:</p>
                      <Stepper 
-    min={1}
-    max={200} onChange={(e)=> this._onSelectLength(e)} value={50} render={({
-      getFormProps,
-      getInputProps,
-      getIncrementProps,
-      getDecrementProps
-    }) =>
-      <form {...getFormProps()}>
-        <button className='my-button' {...getDecrementProps()}>
-         -
-        </button>
-        <input className='my-step-input' {...getInputProps()} />
-        <button className='my-button' {...getIncrementProps()}>
-          +
-        </button>
-      </form>}/>
+                            min={1}
+                            max={200} value={totalNotes} onChange={(e)=> this._onSelectLength(e)}  render={({
+                              getFormProps,
+                              getInputProps,
+                              getIncrementProps,
+                              getDecrementProps
+                            }) =>
+                              <form {...getFormProps()}>
+                                <button className='my-button' {...getDecrementProps()}>
+                                 -
+                                </button>
+                                <input className='my-step-input' {...getInputProps()} />
+                                <button className='my-button' {...getIncrementProps()}>
+                                  +
+                                </button>
+                              </form>}/>
                 </div>
                 <div className='series'>
                     { this.renderSeries() }
