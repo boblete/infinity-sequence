@@ -45,12 +45,14 @@ const defaultOption = options[0]
 
         this.getSeries()
     }
-    componentWillUpdate(prevPops,prevState){
-        console.log(prevState,this.state);
-        if(prevState.currentOption!=this.state.currentOption){
-            console.log('test')
+    componentWillUpdate(nextProps,nextState){
+        console.log(nextState,this.state);
+        if(nextState.currentOption!==this.state.currentOption){
+            console.log('nextState',nextState.currentOption,this.state.currentOption);
             //this.setState()
-            this.renderSeries();
+            this.state.currentOption=nextState.currentOption
+            this.getSeries();
+            //this.renderSeries();
         }
     }
     getSeries(){
@@ -73,7 +75,7 @@ const defaultOption = options[0]
         for(var j = this.state.startNote ; j<=endSeries;j++  ){
             noteContainer.push(convertMidiToNote(currentNote - pn[j]));
         }
-        //console.log(noteContainer);
+        console.log(noteContainer);
         this.setState({noteContainer , noteContainer});
       //  this.renderSeries();
     }
@@ -81,6 +83,7 @@ const defaultOption = options[0]
     renderSeries() {
         let s = ""
         let noteContainer = this.state.noteContainer;
+        console.log(this.state.noteContainer);
         for(var k = 0 ; k <noteContainer.length; k++){
             s += noteContainer[k]+ ", ";
         }
@@ -95,6 +98,7 @@ const defaultOption = options[0]
         let { staveVisible,options ,defaultOption,currentOption} = this.state;
         let { actions, visibleInstrument, volume, inputMode, registerOfflineHook, registerOnlineHook } = this.props;
         let _onSelect = this._onSelect
+        console.log('render');
         return (
             <div className='is-container'>
             <h1>Infinity series</h1>
