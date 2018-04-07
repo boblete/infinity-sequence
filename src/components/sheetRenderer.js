@@ -15,7 +15,7 @@ class SheetMusic extends React.Component {
 
     initNotesAsVexflowObjects(notes) {
         let vexFlowNotes = [];
-        
+
         notes.forEach((elem, index) => {
             let length = elem.length;
             let formattedNote = elem.substring(0, length-1) + "/" + elem.substring(length - 1);

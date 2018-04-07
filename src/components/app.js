@@ -4,13 +4,10 @@ import Dropdown from 'react-dropdown'
 import SheetMusic from './sheetRenderer';
 import {convertMidiToNote,convertNoteToMidi} from '../utils/helpers'
 import Engine from './engine/engine'
-/* 
-
-The Danish composer Per Nørgård's "infinity sequence", 
-invented in an attempt to unify in a perfect way repetition and variation: 
+/*
+The Danish composer Per Nørgård's "infinity sequence",
+invented in an attempt to unify in a perfect way repetition and variation:
 a(2n) = -a(n), a(2n+1) = a(n) + 1, a(0)=0.
-
-
 */
 
 
@@ -20,6 +17,7 @@ const OCTAVES = [1,2,3,4,5,6,7,8];
 class App extends React.Component {
      constructor(props) {
         super();
+        this.engine = new Engine();
      }
     state = {
         staveVisible: false,
@@ -37,19 +35,24 @@ class App extends React.Component {
         currentOption:'C',
         noteContainer:[]
     }
-    
+
     /*
     import Dropdown from 'react-dropdown'
 import 'react-dropdown/style.css'
 const defaultOption = options[0]
 <Dropdown options={options} onChange={this._onSelect} value={defaultOption} placeholder="Select an option" />
-
     */
-    
-    componentDidMount () {
 
+    componentDidMount () {
         this.getSeries()
     }
+
+
+    componentDidUpdate(){
+        this.engine.stop();
+        this.engine.play(this.state.noteContainer)
+    }
+
     componentWillUpdate(nextProps,nextState){
         console.log(nextState,this.state);
         if(nextState.currentOption!==this.state.currentOption){
@@ -78,7 +81,6 @@ const defaultOption = options[0]
         /*
             pn[2*i] = pn[2*i -2] - (pn[i] - pn[i-1])
             pn[2*i +1] = pn[2*i -1] + (pn[i] - pn[i-1])
-
         */
         console.log(this.state.currentOption , OCTAVES[3])
         var currentNote=convertNoteToMidi(this.state.currentOption + this.state.currentOctaveOption);
@@ -92,7 +94,7 @@ const defaultOption = options[0]
         this.setState({noteContainer , noteContainer});
       //  this.renderSeries();
     }
-  
+
     renderSeries() {
         let s = ""
         let noteContainer = this.state.noteContainer;
@@ -117,6 +119,7 @@ const defaultOption = options[0]
         let currentIntervalOption = e.value;
         this.setState({currentIntervalOption , currentIntervalOption}, this.getSeries());
     }
+
     render() {
         let { staveVisible,options ,defaultOption,currentOption,octaveOptions,currentOctaveOption,intervalOptions,currentIntervalOption} = this.state;
         let { actions, visibleInstrument, volume, inputMode, registerOfflineHook, registerOnlineHook } = this.props;
@@ -133,7 +136,7 @@ const defaultOption = options[0]
                     <Dropdown options={octaveOptions} onChange={(e) =>this._onSelectOctave(e)} value={""+currentOctaveOption} placeholder="Select an option" />
                     <p>interval:</p>
                     <Dropdown options={intervalOptions} onChange={(e) =>this._onSelectInterval(e)} value={""+currentIntervalOption} placeholder="Select an option" />
-                
+
                     <p>start:</p>
                     <p>length:</p>
                 </div>
