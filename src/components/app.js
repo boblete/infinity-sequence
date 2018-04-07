@@ -77,6 +77,10 @@ const defaultOption = options[0]
             this.state.totalNotes=nextState.totalNotes;
             this.getSeries();
         }
+          if(nextState.startNote!==this.state.startNote){
+            this.state.startNote=nextState.startNote;
+            this.getSeries();
+        }
     }
     getSeries(){
         var pn = [0,this.state.currentIntervalOption]
@@ -115,26 +119,27 @@ const defaultOption = options[0]
     _onSelect(e){
         console.log(e,this);
         let currentOption = e.value;
-        this.setState({currentOption , currentOption}, this.getSeries());
+        this.setState({currentOption , currentOption});
     }
      _onSelectOctave(e){
         console.log(e,this);
         let currentOctaveOption = e.value;
-        this.setState({currentOctaveOption , currentOctaveOption}, this.getSeries());
+        this.setState({currentOctaveOption , currentOctaveOption});
     }
      _onSelectInterval(e){
         console.log(e,this);
         let currentIntervalOption = e.value;
-        this.setState({currentIntervalOption , currentIntervalOption}, this.getSeries());
+        this.setState({currentIntervalOption , currentIntervalOption});
     }
     _onSelectStart(e){
         console.log(e)
+         let startNote = e
+        this.setState({startNote , startNote});
     }
      _onSelectLength(e){
         console.log(e)
         let totalNotes = e
         this.setState({totalNotes , totalNotes});
-        
     }
     render() {
         let { noteContainer,staveVisible,options ,defaultOption,totalNotes,startNote,currentOption,octaveOptions,currentOctaveOption,intervalOptions,currentIntervalOption} = this.state;
@@ -154,7 +159,7 @@ const defaultOption = options[0]
 
                     <p>start:</p>
                     <Stepper 
-                        min={1}
+                        min={0}
                         max={100} value = {startNote} onChange={(e)=> this._onSelectStart(e)} render={({
                           getFormProps,
                           getInputProps,
