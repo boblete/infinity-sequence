@@ -70,7 +70,7 @@ export default class Midi{
         }
     }
 
-    play(notes,durationValue,channel){
+    play(channel,notes,durationValue){
         if(this.can_send){
             this.playChannel(channel,notes,durationValue);
             //this.playChannel(1,notes,durationValue2);
@@ -88,6 +88,7 @@ export default class Midi{
         this.stopPlaying(channel);
         let that = this;
         that.donePlaying = false;
+        console.log(durationValue)
         let durationInt = durationValue.replace( 'n', '');
 
         let timeBetweenNotes = parseInt(2000/durationInt);
@@ -136,7 +137,7 @@ export default class Midi{
     stopPlaying(channel){
         this.engine.stop();
         if(this.myintervals[channel] !== null){
-            console.log("Clearing interval");
+            console.log("Clearing interval " + channel);
             clearInterval(this.myintervals[channel]);
         }
         if(midiDevices[0] !== undefined){
