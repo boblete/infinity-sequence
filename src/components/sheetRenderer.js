@@ -15,10 +15,18 @@ class SheetMusic extends React.Component {
         notes.forEach((elem, index) => {
             let length = elem.length;
             let formattedNote = elem.substring(0, length-1) + "/" + elem.substring(length - 1);
-            vexFlowNotes.push(new StaveNote({
-                keys: [formattedNote],
-                duration: "w",
-            }));
+            if (this.props.octave > 3) {
+                vexFlowNotes.push(new StaveNote({
+                    keys: [formattedNote],
+                    duration: "w",
+                }));
+            } else {
+                vexFlowNotes.push(new StaveNote({
+                    clef: "bass",
+                    keys: [formattedNote],
+                    duration: "w",
+                }));
+            }
         });
 
         return vexFlowNotes;
@@ -27,7 +35,8 @@ class SheetMusic extends React.Component {
     createStave(renderer, vexFlowNotes) {
         const ctx = renderer.getContext();
         const stave = new Stave(0, 0, 1200);  // x, y, width
-        stave.addClef("treble").setContext(ctx).draw();
+        const clef = this.props.octave > 3 ? "treble" : "bass"; 
+        stave.addClef(clef).setContext(ctx).draw();
         return Formatter.FormatAndDraw(ctx, stave, vexFlowNotes);
     }
 
