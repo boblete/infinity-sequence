@@ -109,8 +109,8 @@ const defaultOption = options[0]
         var pn = [0,this.state.currentIntervalOption]
         var endSeries = this.state.startNote+ this.state.totalNotes;
         for(var i = 1; i<=endSeries;i++){
-            pn[2*i] = pn[2*i -2] - (pn[i] - pn[i-1])
-            pn[2*i +1] = pn[2*i -1] + (pn[i] - pn[i-1])
+            pn[2*i] = pn[2*i -2] - (pn[i] - pn[i-1]);
+            pn[2*i +1] = pn[2*i -1] + (pn[i] - pn[i-1]);
         }
         /*
             pn[2*i] = pn[2*i -2] - (pn[i] - pn[i-1])
