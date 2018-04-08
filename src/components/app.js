@@ -45,6 +45,7 @@ class App extends React.Component {
         noteContainer:[],
         durationValue:"4n",
         durationValue2:"1n",
+        durationValue3:"4n",
         staveLength:25
     }
 
@@ -174,7 +175,13 @@ const defaultOption = options[0]
 
      this.setState({durationValue2: e.target.value});
     }
+     _handleChange3(e){
 
+     this.setState({durationValue3: e.target.value});
+    }
+    _handleMidi(e){
+        
+    }
     render() {
         let { noteContainer,staveVisible,options ,defaultOption,totalNotes,startNote,currentOption,staveLength,octaveOptions,currentOctaveOption,intervalOptions,currentIntervalOption} = this.state;
         let { actions, visibleInstrument, volume, inputMode, registerOfflineHook, registerOnlineHook } = this.props;
@@ -186,7 +193,7 @@ const defaultOption = options[0]
                 <div className='span1'>
                 <p>The Danish composer Per Nørgård's "infinity sequence",
 invented in an attempt to unify in a perfect way repetition and variation:
-a(2n) = -a(n), a(2n+1) = a(n) + 1, a(0)=0.</p>
+a(2n) = -a(n), a(2n+1) = a(n) + 1, a(0)=0. <a href='https://www.youtube.com/watch?v=psUmxWZUP0c'>Link</a></p>
                     <div className='control-box' >
                     <p>First Note Pitch:</p>
                     <Dropdown options={options} onChange={(e) =>this._onSelect(e)} value={currentOption} placeholder="Select an option" />
@@ -273,7 +280,11 @@ a(2n) = -a(n), a(2n+1) = a(n) + 1, a(0)=0.</p>
                          <p>note duration instrument2:</p>
                          <textarea value={this.state.durationValue2} onChange={(e)=>this._handleChange2(e)} />
                          </div>
-
+                          <div className='control-box' >
+                         <p>note duration instrument2:</p>
+                         <textarea value={this.state.durationValue3} onChange={(e)=>this._handleChange3(e)} />
+                         <button click={(e)=>this._handleMidi(1) }>Midi 1</button>
+                         </div>
                      </div>
                 </div>
                 <div>
