@@ -16,12 +16,19 @@ class SheetMusic extends React.Component {
         notes.forEach((elem, index) => {
             let length = elem.length;
             let formattedNote = elem.substring(0, length-1) + "/" + elem.substring(length - 1);
-            
-            vexFlowNotes.push(new StaveNote({
-                clef: clef,
-                keys: [formattedNote],
-                duration: "w",
-            }));
+            console.log(formattedNote)
+            if(formattedNote.indexOf('-')){
+                //continue;
+            }
+            try{
+                vexFlowNotes.push(new StaveNote({
+                    clef: clef,
+                    keys: [formattedNote],
+                    duration: "w",
+                }));
+            }catch(e){
+                console.warn('badNote')
+            }
         });
 
         return vexFlowNotes;
