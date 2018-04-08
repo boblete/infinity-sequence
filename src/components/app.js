@@ -180,7 +180,7 @@ const defaultOption = options[0]
      this.setState({durationValue3: e.target.value});
     }
     _handleMidi(e){
-        
+        console.log(e)
     }
     render() {
         let { noteContainer,staveVisible,options ,defaultOption,totalNotes,startNote,currentOption,staveLength,octaveOptions,currentOctaveOption,intervalOptions,currentIntervalOption} = this.state;
@@ -280,10 +280,14 @@ a(2n) = -a(n), a(2n+1) = a(n) + 1, a(0)=0. <a href='https://www.youtube.com/watc
                          <p>note duration instrument2:</p>
                          <textarea value={this.state.durationValue2} onChange={(e)=>this._handleChange2(e)} />
                          </div>
-                          <div className='control-box' >
-                         <p>note duration instrument2:</p>
-                         <textarea value={this.state.durationValue3} onChange={(e)=>this._handleChange3(e)} />
-                         <button click={(e)=>this._handleMidi(1) }>Midi 1</button>
+                          <div className='control-box-midi' >
+                         <p>note duration midi:</p>
+                         <textarea className='miditext' value={this.state.durationValue3} onChange={(e)=>this._handleChange3(e)} />
+                        <button onClick={(e)=>this._handleMidi(1) }>Start Midi 1</button>
+                        <button onClick={(e)=>this._handleMidi(2) }>Start Midi 2</button>
+                        <button onClick={(e)=>this._handleMidi(3) }>Start Midi 3</button>
+                        <button onClick={(e)=>this._handleMidi(4) }>Start Midi 4</button>
+                        <button onClick={(e)=>this._handleMidi(5) }>Start Midi 5</button>
                          </div>
                      </div>
                 </div>
