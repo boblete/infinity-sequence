@@ -299,9 +299,10 @@ a(2n) = -a(n), a(2n+1) = a(n) + 1, a(0)=0. <a href='https://www.youtube.com/watc
                      </div>
                 </div>
                 <div>
-
+                    <p>Series:</p>
                     <div className='series'>
-                        { this.renderSeries() }
+                    <p>
+                       { this.renderSeries() }</p>
                     </div>
                     <div className="vexFlow">
                         <SheetMusic notes={noteContainer} staveLength={staveLength} octave={currentOctaveOption}/>
