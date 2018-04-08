@@ -115,7 +115,7 @@ const defaultOption = options[0]
         this.setState({currentNote, currentNote});
         // console.log(pn);
         var noteContainer = [];
-        for(var j = this.state.startNote ; j<=endSeries;j++  ){
+        for(var j = this.state.startNote ; j<endSeries;j++  ){
             noteContainer.push(convertMidiToNote(currentNote - pn[j]));
         }
         console.log(noteContainer);
@@ -180,18 +180,21 @@ const defaultOption = options[0]
             <div className='is-container'>
                 <h1>Infinity series</h1>
                 <div className='span1'>
+                <p>The Danish composer Per Nørgård's "infinity sequence",
+invented in an attempt to unify in a perfect way repetition and variation:
+a(2n) = -a(n), a(2n+1) = a(n) + 1, a(0)=0.</p>
                     <div className='control-box' >
-                    <p>key:</p>
+                    <p>First Note Pitch:</p>
                     <Dropdown options={options} onChange={(e) =>this._onSelect(e)} value={currentOption} placeholder="Select an option" />
                     </div>
 
                     <div className='control-box' >
-                    <p>octave:</p>
+                    <p>Octave:</p>
                     <Dropdown options={octaveOptions} onChange={(e) =>this._onSelectOctave(e)} value={""+currentOctaveOption} placeholder="Select an option" />
                      </div>
 
                      <div className='control-box' >
-                    <p>interval:</p>
+                    <p>Interval seed (between 1st and 2nd note):</p>
                     <Dropdown options={intervalOptions} onChange={(e) =>this._onSelectInterval(e)} value={""+currentIntervalOption} placeholder="Select an option" />
                     </div>
 
@@ -216,7 +219,7 @@ const defaultOption = options[0]
                           </form>}/>
                      </div>
                     <div className='control-box' >
-                     <p>length:</p>
+                     <p>Length of series to display:</p>
                      <Stepper
                             min={1}
                             max={200} value={totalNotes} onChange={(e)=> this._onSelectLength(e)}  render={({
@@ -259,11 +262,11 @@ const defaultOption = options[0]
                      </div>
                      <div>
                         <div className='control-box' >
-                         <p>duration1:</p>
+                         <p>note duration instrument 1:</p>
                          <textarea value={this.state.durationValue} onChange={(e)=>this._handleChange(e)} />
                          </div>
                           <div className='control-box' >
-                         <p>duration2:</p>
+                         <p>note duration instrument2:</p>
                          <textarea value={this.state.durationValue2} onChange={(e)=>this._handleChange2(e)} />
                          </div>
 
@@ -275,7 +278,7 @@ const defaultOption = options[0]
                         { this.renderSeries() }
                     </div>
                     <div className="vexFlow">
-                        <SheetMusic notes={noteContainer} staveLength={staveLength}/>
+                        <SheetMusic notes={noteContainer} staveLength={staveLength} octave={currentOctaveOption}/>
                     </div>
                
                 </div>
