@@ -25,6 +25,7 @@ class App extends React.Component {
         this.midi = new Midi();
         this.midiUpdated = false;
         this.skippedFirstUpdate = false;
+        this.midisActive = [false,false,false,false,false,false,false,false,false,false];
         //this.engine = new Engine();
      }
 
@@ -63,6 +64,7 @@ const defaultOption = options[0]
 
 
     componentDidUpdate(){
+        /*
         if(this.skippedFirstUpdate){
             if(!this.midiUpdated){
                 this.midi.play(this.state.noteContainer,this.state.durationValue,this.state.durationValue);
@@ -72,7 +74,7 @@ const defaultOption = options[0]
             }
         }else{
             this.skippedFirstUpdate= true;
-        }
+        }*/
 
     }
 
@@ -180,7 +182,18 @@ const defaultOption = options[0]
      this.setState({durationValue3: e.target.value});
     }
     _handleMidi(e){
-        
+        console.log("Starting channel" + e);
+        this.midisActive[e] = !this.midisActive[e];
+        if(this.midisActive[e]){
+            if(!this.midiUpdated){
+                this.midi.play(e,this.state.noteContainer,this.state.durationValue3);
+                this.midiUpdated = true;
+            }else{
+                this.midiUpdated = false;
+            }
+        }else{
+            this.midi.stopPlaying(e);
+        }
     }
     render() {
         let { noteContainer,staveVisible,options ,defaultOption,totalNotes,startNote,currentOption,staveLength,octaveOptions,currentOctaveOption,intervalOptions,currentIntervalOption} = this.state;
@@ -295,7 +308,7 @@ a(2n) = -a(n), a(2n+1) = a(n) + 1, a(0)=0. <a href='https://www.youtube.com/watc
                     <div className="vexFlow">
                         <SheetMusic notes={noteContainer} staveLength={staveLength} octave={currentOctaveOption}/>
                     </div>
-               
+
                 </div>
             </div>
         )

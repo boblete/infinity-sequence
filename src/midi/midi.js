@@ -51,7 +51,6 @@ export default class Midi{
         this.can_send = false;
         this.engine = new Engine();
         this.donePlaying = false;
-        this.last_channel_played = 0;
         this.myintervals = [null,null,null,null,null,null,null,null,null,null];
         let that = this;
         if (navigator.requestMIDIAccess) {
@@ -71,17 +70,16 @@ export default class Midi{
         }
     }
 
-    play(notes,durationValue,durationValue2){
+    play(notes,durationValue,channel){
         if(this.can_send){
-            this.playChannel(this.last_channel_played,notes,durationValue);
-            this.last_channel_played = (this.last_channel_played+1)%10;
+            this.playChannel(channel,notes,durationValue);
             //this.playChannel(1,notes,durationValue2);
             if((midiDevices[0] instanceof LaunchPadControl)){
-                this.engine.play(notes,durationValue,durationValue2);
+                this.engine.play(notes,durationValue);
             }
         }else{
             console.log("No MIDI devices found");
-            this.engine.play(notes,durationValue,durationValue2);
+            this.engine.play(notes,durationValue);
         }
     }
 
@@ -138,7 +136,7 @@ export default class Midi{
     stopPlaying(channel){
         this.engine.stop();
         if(this.myintervals[channel] !== null){
-            console.log("Clearing interval")
+            console.log("Clearing interval");
             clearInterval(this.myintervals[channel]);
         }
         if(midiDevices[0] !== undefined){
