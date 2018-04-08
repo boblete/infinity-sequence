@@ -7,8 +7,16 @@ The infinity series is a series of numbers - and thus the use of it in musical c
 Nørgård has said that he did not invent the infinity series, but discovered it. In this way he gained insight into a view of the world which was well ahead of his time. This might seem a pompous statement, but in fact the infinity series exhibits a number of fascinating characteristics which one would not hesitate today to describe as fractal. In 1959 there was no real corpus of scientific knowledge concerning this phenomenon, nor a scientific language to describe it. This did not appear on the scene until the general spread of the Chaos Theory around 1980.
 
 # How do I run this?
-``` npm install or yarn install ```
 
-``` npm run start or yarn run start ```
+### NPM
+```
+npm install
+npm run start
+```
+### Yarn
+``` 
+yarn install 
+yarn run start 
+```
 
 <sub><sup>Built at [Music Hack Day London 2018](https://goldsmiths.tech/music)</sup></sub>
