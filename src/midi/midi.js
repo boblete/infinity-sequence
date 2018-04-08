@@ -1,5 +1,6 @@
 import LaunchPadControl from './launchPad';
 import PushControl from './push';
+import Virtual from './virtual';
 
 import Engine from '../components/engine/engine';
 import * as helpers from '../utils/helpers';
@@ -21,6 +22,7 @@ function initDevices(actions) {
                 }
             }
         }
+        console.log(input.name);
 
         if (input.name.indexOf("Ableton Push") > -1) {
             let push = new PushControl(input, output, actions);
@@ -31,6 +33,11 @@ function initDevices(actions) {
             let launchPad = new LaunchPadControl(input, output, actions);
             midiDevices.push(launchPad);
             input.onmidimessage = launchPad.onMIDIMessage;
+            return;
+        }else if (input.name.indexOf("Virtual port") > -1) {
+            let controller = new Virtual(input, output, actions,[]);
+            midiDevices.push(controller);
+            input.onmidimessage = controller.onMIDIMessage;
             return;
         }
     }
@@ -87,7 +94,7 @@ export default class Midi{
             if(index < notes.length){
                 note = helpers.convertNoteToMidi(notes[index]);
                 midiDevices[0].sendMsgToOutput(channel,note,timeBetweenNotes,true);
-                console.log("NOtes");
+                console.log("Notes");
                 console.log(notes.length);
                 console.log(index);
             }
@@ -121,6 +128,7 @@ export default class Midi{
             console.log("name", name, "port", port, "state", state);
         }
     }
+
 
     stopPlaying(){
         console.log("Stop playing");

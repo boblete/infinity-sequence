@@ -113,6 +113,16 @@ class MidiControl {
         this.gridButtons.forEach(button => this.midiOut.send([144, button, 0]));
     }
 
+    sendMsgToOutput(channel,note,time,on){
+        let msg =  new Uint8Array( [144+channel, note, 127 ]);
+        if(on){
+            this.midiOut.send(msg);
+        }else{
+            msg =  new Uint8Array( [128+channel, note, 127 ]);
+            this.midiOut.send(msg);
+        }
+    }
+
 }
 
 export default MidiControl;

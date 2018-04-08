@@ -174,41 +174,31 @@ const defaultOption = options[0]
             <div className='is-container'>
                 <h1>Infinity series</h1>
                 <div className='span1'>
-                    <p>key:</p>
-                    <Dropdown options={options} onChange={(e) =>this._onSelect(e)} value={currentOption} placeholder="Select an option" />
-                    <p>octave:</p>
-                    <Dropdown options={octaveOptions} onChange={(e) =>this._onSelectOctave(e)} value={""+currentOctaveOption} placeholder="Select an option" />
-                    <p>interval:</p>
-                    <Dropdown options={intervalOptions} onChange={(e) =>this._onSelectInterval(e)} value={""+currentIntervalOption} placeholder="Select an option" />
-
-                    <p>start:</p>
-                    <Stepper
-                        min={0}
-                        max={100} value = {startNote} onChange={(e)=> this._onSelectStart(e)} render={({
-                          getFormProps,
-                          getInputProps,
-                          getIncrementProps,
-                          getDecrementProps
-                     }) =>
-                          <form {...getFormProps()}>
-                            <button className='my-button' {...getDecrementProps()}>
-                             -
-                            </button>
-                            <input className='my-step-input' {...getInputProps()} />
-                            <button className='my-button' {...getIncrementProps()}>
-                              +
-                            </button>
-                          </form>}/>
-
-                     <p>length:</p>
-                     <Stepper
-                            min={1}
-                            max={200} value={totalNotes} onChange={(e)=> this._onSelectLength(e)}  render={({
+                    <div id="note-options">
+                    <section>
+                        <p>key:</p>
+                        <Dropdown options={options} onChange={(e) =>this._onSelect(e)} value={currentOption} placeholder="Select an option" />
+                    </section>
+                    <section>
+                        <p>octave:</p>
+                        <Dropdown options={octaveOptions} onChange={(e) =>this._onSelectOctave(e)} value={""+currentOctaveOption} placeholder="Select an option" />
+                    </section>
+                    <section>
+                        <p>interval:</p>
+                        <Dropdown options={intervalOptions} onChange={(e) =>this._onSelectInterval(e)} value={""+currentIntervalOption} placeholder="Select an option" />
+                    </section>
+                    </div>
+                    <div className="two-element-selection">
+                        <section>
+                        <p>start:</p>
+                        <Stepper
+                            min={0}
+                            max={100} value = {startNote} onChange={(e)=> this._onSelectStart(e)} render={({
                               getFormProps,
                               getInputProps,
                               getIncrementProps,
                               getDecrementProps
-                            }) =>
+                         }) =>
                               <form {...getFormProps()}>
                                 <button className='my-button' {...getDecrementProps()}>
                                  -
@@ -218,12 +208,38 @@ const defaultOption = options[0]
                                   +
                                 </button>
                               </form>}/>
-
-
+                        </section>
+                        <section>
+                         <p>length:</p>
+                         <Stepper
+                                min={1}
+                                max={200} value={totalNotes} onChange={(e)=> this._onSelectLength(e)}  render={({
+                                  getFormProps,
+                                  getInputProps,
+                                  getIncrementProps,
+                                  getDecrementProps
+                                }) =>
+                                  <form {...getFormProps()}>
+                                    <button className='my-button' {...getDecrementProps()}>
+                                     -
+                                    </button>
+                                    <input className='my-step-input' {...getInputProps()} />
+                                    <button className='my-button' {...getIncrementProps()}>
+                                      +
+                                    </button>
+                                  </form>}/>
+                          </section>
+                    </div>
+                     <div className="two-element-selection">
+                     <section>
                      <p>duration1:</p>
                      <textarea value={this.state.durationValue} onChange={(e)=>this._handleChange(e)} />
+                     </section>
+                     <section>
                      <p>duration2:</p>
                      <textarea value={this.state.durationValue2} onChange={(e)=>this._handleChange2(e)} />
+                     </section>
+                     </div>
                 </div>
                 <div className='series'>
                     { this.renderSeries() }

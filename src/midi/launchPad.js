@@ -36,7 +36,6 @@ export default class LaunchPadControl extends MidiControl {
             this.midiOut.send(msg);
         }else{
             msg =  new Uint8Array( [128+channel, btn, 0 ]);
-            let timeSend = window.performance.now() + time;
             this.midiOut.send(msg);
         }
     }
