@@ -279,11 +279,11 @@ a(2n) = -a(n), a(2n+1) = a(n) + 1, a(0)=0. <a href='https://www.youtube.com/watc
 
                      </div>
                      <div>
-                        <div className='control-box' >
+                        <div className='control-box-inst' >
                          <p>note duration instrument 1:</p>
                          <textarea value={this.state.durationValue} onChange={(e)=>this._handleChange(e)} />
                          </div>
-                          <div className='control-box' >
+                          <div className='control-box-inst' >
                          <p>note duration instrument2:</p>
                          <textarea value={this.state.durationValue2} onChange={(e)=>this._handleChange2(e)} />
                          </div>
