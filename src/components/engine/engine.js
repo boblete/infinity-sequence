@@ -21,13 +21,15 @@ export default class Engine{
     },notes, durationValue);
         this.seq.loop = 0;
         this.seq.start(0);
-          this.seq2 = new Tone.Sequence(function(time, note){
+
+        this.seq2 = new Tone.Sequence(function(time, note){
             //console.log(note)
             that.synth2.triggerAttackRelease(note, durationValue);
         //straight quater notes
     },notes, durationValue2);
         this.seq2.loop = 0;
         this.seq2.start(0);
+        
         Tone.Transport.start();
     }
     stop(){

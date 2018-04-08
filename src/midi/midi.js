@@ -44,10 +44,12 @@ export default class Midi{
         let that = this;
         if (navigator.requestMIDIAccess) {
             navigator.requestMIDIAccess().then(function(midiAccess){
-                that.can_send = true;
                 midi = midiAccess;
                 midi.onstatechange = that.onStateChange;
                 initDevices();
+                if(midiDevices.length > 0){
+                    that.can_send = true;
+                }
 
             }, function(e){
                     console.log("No access to MIDI devices or your browser doesn't support WebMIDI API. Please use WebMIDIAPIShim " + error);
@@ -57,33 +59,50 @@ export default class Midi{
         }
     }
 
-    play(notes){
+    play(notes,durationValue,durationValue2){
         if(this.can_send){
-            let that = this;
-            that.donePlaying = false;
-            let timeBetweenNotes = 2000;
-            let index = 1;
-            let starting_time = new Date().getTime();
-            let note = helpers.convertNoteToMidi(notes[index]);
-            midiDevices[0].sendMsgToOutput(note,timeBetweenNotes,true);
-            this.myInterval = setInterval(function(){
-                midiDevices[0].sendMsgToOutput(note,timeBetweenNotes,false);
-                index++;
-                note = helpers.convertNoteToMidi(notes[index]);
-                console.log(index);
-                midiDevices[0].sendMsgToOutput(note,timeBetweenNotes,true);
-                if(index > 10){
-                    that.donePlaying = true;
-                }
-                if(that.donePlaying){
-                    midiDevices[0].sendMsgToOutput(note,timeBetweenNotes,false);
-                    clearInterval(that.myInterval);
-                }
-            },timeBetweenNotes);
+            this.playChannel(0,notes,durationValue);
+            //this.playChannel(1,notes,durationValue2);
+            if((midiDevices[0] instanceof LaunchPadControl)){
+                this.engine.play(notes,durationValue,durationValue2);
+            }
         }else{
-            //this.engine.play(notes);
+            this.engine.play(notes,durationValue,durationValue2);
         }
     }
+
+    playChannel(channel,notes,durationValue){
+        let that = this;
+        that.donePlaying = false;
+        let durationInt = durationValue.replace( 'n', '');
+
+        let timeBetweenNotes = parseInt(2000/durationInt);
+        let starting_time = new Date().getTime();
+        let index = 0;
+        let note = helpers.convertNoteToMidi(notes[index]);
+        midiDevices[0].sendMsgToOutput(channel,note,timeBetweenNotes,true);
+        this.myInterval = setInterval(function(){
+            midiDevices[0].sendMsgToOutput(channel,note,timeBetweenNotes,false);
+            index++;
+            if(index < notes.length){
+                note = helpers.convertNoteToMidi(notes[index]);
+                midiDevices[0].sendMsgToOutput(channel,note,timeBetweenNotes,true);
+                console.log("NOtes");
+                console.log(notes.length);
+                console.log(index);
+            }
+
+            if(index >= notes.length){
+                that.donePlaying = true;
+                console.log(index);
+            }
+            if(that.donePlaying){
+                midiDevices[0].clearButtons();
+                clearInterval(that.myInterval);
+            }
+        },timeBetweenNotes);
+    }
+
 
     onStateChange(event) {
         console.log('onStateChange');

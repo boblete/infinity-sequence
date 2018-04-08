@@ -23,7 +23,8 @@ class App extends React.Component {
      constructor(props) {
         super();
         this.midi = new Midi();
-        this.midiUpdated = false
+        this.midiUpdated = false;
+        this.skippedFirstUpdate = false;
         //this.engine = new Engine();
      }
 
@@ -56,18 +57,17 @@ const defaultOption = options[0]
 
     componentDidMount () {
         this.getSeries()
-
     }
 
 
     componentDidUpdate(){
-        if(!this.midiUpdated){
-            this.midi.stopPlaying();
-            this.midi.play(this.state.noteContainer);
-            this.midiUpdated = true;
+        if(this.skippedFirstUpdate){
+                this.midi.stopPlaying();
+                this.midi.play(this.state.noteContainer,this.state.durationValue,this.state.durationValue);
+        }else{
+            this.skippedFirstUpdate= true;
         }
 
-        //this.engine.play(this.state.noteContainer)
     }
 
     componentWillUpdate(nextProps,nextState){
@@ -97,7 +97,6 @@ const defaultOption = options[0]
         }
     }
     getSeries(){
-        this.midiUpdated = false;
 
         var pn = [0,this.state.currentIntervalOption]
         var endSeries = this.state.startNote+ this.state.totalNotes;

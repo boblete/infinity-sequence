@@ -29,15 +29,13 @@ export default class LaunchPadControl extends MidiControl {
             return this.changeChannel(this.currentChannel - 1);
         }
     }
-    sendMsgToOutput(note,time,on){
+    sendMsgToOutput(channel,note,time,on){
         let btn = gridButtons[note%gridButtons.length];
-        let msg =  new Uint8Array( [144, btn, 1 ]);
+        let msg =  new Uint8Array( [144+channel, btn, 1 ]);
         if(on){
-            console.log("Light on");
             this.midiOut.send(msg);
         }else{
-            console.log("Light off");
-            msg =  new Uint8Array( [144, btn, 0 ]);
+            msg =  new Uint8Array( [128+channel, btn, 0 ]);
             let timeSend = window.performance.now() + time;
             this.midiOut.send(msg);
         }
