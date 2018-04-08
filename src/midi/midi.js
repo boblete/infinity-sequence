@@ -88,20 +88,19 @@ export default class Midi{
         this.stopPlaying(channel);
         let that = this;
         that.donePlaying = false;
-        console.log(durationValue)
         let durationInt = durationValue.replace( 'n', '');
 
         let timeBetweenNotes = parseInt(2000/durationInt);
         let starting_time = new Date().getTime();
         let index = 0;
         let note = helpers.convertNoteToMidi(notes[index]);
-        midiDevices[0].sendMsgToOutput(channel,note,timeBetweenNotes,true);
+        midiDevices[0].startNote(channel,note,timeBetweenNotes);
         this.myintervals[channel] = setInterval(function(){
-            midiDevices[0].sendMsgToOutput(channel,note,timeBetweenNotes,false);
+            midiDevices[0].endNote(channel);
             index++;
             if(index < notes.length){
                 note = helpers.convertNoteToMidi(notes[index]);
-                midiDevices[0].sendMsgToOutput(channel,note,timeBetweenNotes,true);
+                midiDevices[0].startNote(channel,note,timeBetweenNotes);
             }
 
             if(index >= notes.length){
@@ -139,6 +138,8 @@ export default class Midi{
         if(this.myintervals[channel] !== null){
             console.log("Clearing interval " + channel);
             clearInterval(this.myintervals[channel]);
+            console.log("Ending note");
+            midiDevices[0].endNote(channel);
         }
         if(midiDevices[0] !== undefined){
             midiDevices[0].clearButtons();

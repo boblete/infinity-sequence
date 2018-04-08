@@ -106,21 +106,20 @@ class MidiControl {
 				let midiMsg = block ? [144, button, this.channelColourArray[channel]] : [144, button, 0]
 
 				this.midiOut.send(midiMsg);
-			})
+			});
 	}
 
     clearButtons() {
         this.gridButtons.forEach(button => this.midiOut.send([144, button, 0]));
     }
 
-    sendMsgToOutput(channel,note,time,on){
+    startNote(channel,note,time){
         let msg =  new Uint8Array( [144+channel, note, 127 ]);
-        if(on){
-            this.midiOut.send(msg);
-        }else{
-            msg =  new Uint8Array( [128+channel, note, 127 ]);
-            this.midiOut.send(msg);
-        }
+        this.midiOut.send(msg);
+    }
+    endNote(channel){
+        let msg =  new Uint8Array( [176+channel, 123, 0 ]);
+        this.midiOut.send(msg);
     }
 
 }
