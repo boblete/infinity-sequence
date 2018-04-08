@@ -87,9 +87,8 @@ class SheetMusic extends React.Component {
     render() {
         return (
             <div ref="outer" style={{
-                border: "2px blue solid",
-                padding: 10,
-                borderRadius: 10,
+                padding:'30px',
+                backgroundColor: 'white',
                 display: "inline-block",
             }}>
                 

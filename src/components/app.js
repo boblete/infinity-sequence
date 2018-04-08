@@ -38,13 +38,14 @@ class App extends React.Component {
         currentIntervalOption:1,
         octaves:OCTAVES,
         defaultOctaves:OCTAVES[3],
-        totalNotes:100,
+        totalNotes:24,
         startNote:0,
         currentNote:60,
         currentOption:'C',
         noteContainer:[],
         durationValue:"4n",
-        durationValue2:"1n"
+        durationValue2:"1n",
+        staveLength:25
     }
 
     /*
@@ -118,7 +119,7 @@ const defaultOption = options[0]
         this.setState({currentNote, currentNote});
         // console.log(pn);
         var noteContainer = [];
-        for(var j = this.state.startNote ; j<=endSeries;j++  ){
+        for(var j = this.state.startNote ; j<endSeries;j++  ){
             noteContainer.push(convertMidiToNote(currentNote - pn[j]));
         }
         console.log(noteContainer);
@@ -160,6 +161,11 @@ const defaultOption = options[0]
         let totalNotes = e
         this.setState({totalNotes , totalNotes});
     }
+     _onSelectStaveLength(e){
+        // console.log(e)
+        let staveLength = e
+        this.setState({staveLength , staveLength});
+    }
     _handleChange(e){
 
      this.setState({durationValue: e.target.value});
@@ -170,7 +176,7 @@ const defaultOption = options[0]
     }
 
     render() {
-        let { noteContainer,staveVisible,options ,defaultOption,totalNotes,startNote,currentOption,octaveOptions,currentOctaveOption,intervalOptions,currentIntervalOption} = this.state;
+        let { noteContainer,staveVisible,options ,defaultOption,totalNotes,startNote,currentOption,staveLength,octaveOptions,currentOctaveOption,intervalOptions,currentIntervalOption} = this.state;
         let { actions, visibleInstrument, volume, inputMode, registerOfflineHook, registerOnlineHook } = this.props;
         //let _onSelect = this._onSelect
         // console.log('render');
@@ -178,26 +184,49 @@ const defaultOption = options[0]
             <div className='is-container'>
                 <h1>Infinity series</h1>
                 <div className='span1'>
-                    <div id="note-options">
-                    <section>
-                        <p>key:</p>
-                        <Dropdown options={options} onChange={(e) =>this._onSelect(e)} value={currentOption} placeholder="Select an option" />
-                    </section>
-                    <section>
-                        <p>octave:</p>
-                        <Dropdown options={octaveOptions} onChange={(e) =>this._onSelectOctave(e)} value={""+currentOctaveOption} placeholder="Select an option" />
-                    </section>
-                    <section>
-                        <p>interval:</p>
-                        <Dropdown options={intervalOptions} onChange={(e) =>this._onSelectInterval(e)} value={""+currentIntervalOption} placeholder="Select an option" />
-                    </section>
+                <p>The Danish composer Per Nørgård's "infinity sequence",
+invented in an attempt to unify in a perfect way repetition and variation:
+a(2n) = -a(n), a(2n+1) = a(n) + 1, a(0)=0.</p>
+                    <div className='control-box' >
+                    <p>First Note Pitch:</p>
+                    <Dropdown options={options} onChange={(e) =>this._onSelect(e)} value={currentOption} placeholder="Select an option" />
                     </div>
-                    <div className="two-element-selection">
-                        <section>
-                        <p>start:</p>
-                        <Stepper
-                            min={0}
-                            max={100} value = {startNote} onChange={(e)=> this._onSelectStart(e)} render={({
+
+                    <div className='control-box' >
+                    <p>Octave:</p>
+                    <Dropdown options={octaveOptions} onChange={(e) =>this._onSelectOctave(e)} value={""+currentOctaveOption} placeholder="Select an option" />
+                     </div>
+
+                     <div className='control-box' >
+                    <p>Interval seed (between 1st and 2nd note):</p>
+                    <Dropdown options={intervalOptions} onChange={(e) =>this._onSelectInterval(e)} value={""+currentIntervalOption} placeholder="Select an option" />
+                    </div>
+
+                    <div className='control-box' >
+                    <p>Series start offset:</p>
+                    <Stepper
+                        min={0}
+                        max={100} value = {startNote} onChange={(e)=> this._onSelectStart(e)} render={({
+                          getFormProps,
+                          getInputProps,
+                          getIncrementProps,
+                          getDecrementProps
+                     }) =>
+                          <form {...getFormProps()}>
+                            <button className='my-button' {...getDecrementProps()}>
+                             -
+                            </button>
+                            <input className='my-step-input' {...getInputProps()} />
+                            <button className='my-button' {...getIncrementProps()}>
+                              +
+                            </button>
+                          </form>}/>
+                     </div>
+                    <div className='control-box' >
+                     <p>Length of series to display:</p>
+                     <Stepper
+                            min={1}
+                            max={200} value={totalNotes} onChange={(e)=> this._onSelectLength(e)}  render={({
                               getFormProps,
                               getInputProps,
                               getIncrementProps,
@@ -212,44 +241,50 @@ const defaultOption = options[0]
                                   +
                                 </button>
                               </form>}/>
-                        </section>
-                        <section>
-                         <p>length:</p>
-                         <Stepper
-                                min={1}
-                                max={200} value={totalNotes} onChange={(e)=> this._onSelectLength(e)}  render={({
-                                  getFormProps,
-                                  getInputProps,
-                                  getIncrementProps,
-                                  getDecrementProps
-                                }) =>
-                                  <form {...getFormProps()}>
-                                    <button className='my-button' {...getDecrementProps()}>
-                                     -
-                                    </button>
-                                    <input className='my-step-input' {...getInputProps()} />
-                                    <button className='my-button' {...getIncrementProps()}>
-                                      +
-                                    </button>
-                                  </form>}/>
-                          </section>
-                    </div>
-                     <div className="two-element-selection">
-                     <section>
-                     <p>duration1:</p>
-                     <textarea value={this.state.durationValue} onChange={(e)=>this._handleChange(e)} />
-                     </section>
-                     <section>
-                     <p>duration2:</p>
-                     <textarea value={this.state.durationValue2} onChange={(e)=>this._handleChange2(e)} />
-                     </section>
+
+                     </div>
+                       <div className='control-box' >
+                     <p>notes per stave:</p>
+                     <Stepper
+                            min={10}
+                            max={200} value={staveLength} onChange={(e)=> this._onSelectStaveLength(e)}  render={({
+                              getFormProps,
+                              getInputProps,
+                              getIncrementProps,
+                              getDecrementProps
+                            }) =>
+                              <form {...getFormProps()}>
+                                <button className='my-button' {...getDecrementProps()}>
+                                 -
+                                </button>
+                                <input className='my-step-input' {...getInputProps()} />
+                                <button className='my-button' {...getIncrementProps()}>
+                                  +
+                                </button>
+                              </form>}/>
+
+                     </div>
+                     <div>
+                        <div className='control-box' >
+                         <p>note duration instrument 1:</p>
+                         <textarea value={this.state.durationValue} onChange={(e)=>this._handleChange(e)} />
+                         </div>
+                          <div className='control-box' >
+                         <p>note duration instrument2:</p>
+                         <textarea value={this.state.durationValue2} onChange={(e)=>this._handleChange2(e)} />
+                         </div>
+
                      </div>
                 </div>
-                <div className='series'>
-                    { this.renderSeries() }
-                </div>
-                <div className="vexFlow">
-                    <SheetMusic notes={noteContainer} staveLength="25"/>
+                <div>
+
+                    <div className='series'>
+                        { this.renderSeries() }
+                    </div>
+                    <div className="vexFlow">
+                        <SheetMusic notes={noteContainer} staveLength={staveLength} octave={currentOctaveOption}/>
+                    </div>
+               
                 </div>
             </div>
         )

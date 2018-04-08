@@ -101,9 +101,6 @@ export default class Midi{
             if(index < notes.length){
                 note = helpers.convertNoteToMidi(notes[index]);
                 midiDevices[0].sendMsgToOutput(channel,note,timeBetweenNotes,true);
-                //console.log("Notes");
-                //console.log(notes.length);
-                //console.log(index);
             }
 
             if(index >= notes.length){
