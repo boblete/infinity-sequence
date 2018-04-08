@@ -48,6 +48,9 @@ export default class Midi{
         this.can_send = false;
         this.engine = new Engine();
         this.donePlaying = false;
+        this.channels_busy = [false,false];
+        this.last_channel_played = 0;
+        this.myintervals = [null,null];
         let that = this;
         if (navigator.requestMIDIAccess) {
             navigator.requestMIDIAccess().then(function(midiAccess){
@@ -68,7 +71,9 @@ export default class Midi{
 
     play(notes,durationValue,durationValue2){
         if(this.can_send){
-            this.playChannel(0,notes,durationValue);
+            console.log("Playing channel this" + this.last_channel_played);
+            this.playChannel(this.last_channel_played,notes,durationValue);
+            this.last_channel_played = (this.last_channel_played+1)%2;
             //this.playChannel(1,notes,durationValue2);
             if((midiDevices[0] instanceof LaunchPadControl)){
                 this.engine.play(notes,durationValue,durationValue2);
@@ -79,6 +84,8 @@ export default class Midi{
     }
 
     playChannel(channel,notes,durationValue){
+        this.stopPlaying(channel);
+        console.log("Playing"+channel);
         let that = this;
         that.donePlaying = false;
         let durationInt = durationValue.replace( 'n', '');
@@ -88,20 +95,19 @@ export default class Midi{
         let index = 0;
         let note = helpers.convertNoteToMidi(notes[index]);
         midiDevices[0].sendMsgToOutput(channel,note,timeBetweenNotes,true);
-        this.myInterval = setInterval(function(){
+        this.myintervals[channel] = setInterval(function(){
             midiDevices[0].sendMsgToOutput(channel,note,timeBetweenNotes,false);
             index++;
             if(index < notes.length){
                 note = helpers.convertNoteToMidi(notes[index]);
                 midiDevices[0].sendMsgToOutput(channel,note,timeBetweenNotes,true);
-                console.log("Notes");
-                console.log(notes.length);
-                console.log(index);
+                //console.log("Notes");
+                //console.log(notes.length);
+                //console.log(index);
             }
 
             if(index >= notes.length){
                 that.donePlaying = true;
-                console.log(index);
             }
             if(that.donePlaying){
                 midiDevices[0].clearButtons();
@@ -130,10 +136,12 @@ export default class Midi{
     }
 
 
-    stopPlaying(){
-        console.log("Stop playing");
+    stopPlaying(channel){
         this.engine.stop();
-        clearInterval(this.myInterval);
+        if(this.myintervals[channel] !== null){
+            console.log("Clearing interval")
+            clearInterval(this.myintervals[channel]);
+        }
         if(midiDevices[0] !== undefined){
             midiDevices[0].clearButtons();
         }

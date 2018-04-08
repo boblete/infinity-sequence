@@ -62,8 +62,12 @@ const defaultOption = options[0]
 
     componentDidUpdate(){
         if(this.skippedFirstUpdate){
-                this.midi.stopPlaying();
+            if(!this.midiUpdated){
                 this.midi.play(this.state.noteContainer,this.state.durationValue,this.state.durationValue);
+                this.midiUpdated = true;
+            }else{
+                this.midiUpdated = false;
+            }
         }else{
             this.skippedFirstUpdate= true;
         }
