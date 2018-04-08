@@ -5,6 +5,8 @@ import Virtual from './virtual';
 import Engine from '../components/engine/engine';
 import * as helpers from '../utils/helpers';
 
+
+
 let midiDevices  = [];
 let midi = null;
 function initDevices(actions) {
@@ -34,9 +36,10 @@ function initDevices(actions) {
             midiDevices.push(launchPad);
             input.onmidimessage = launchPad.onMIDIMessage;
             return;
-        }else if (input.name.indexOf("Virtual port") > -1) {
+        }else if (input.name.indexOf("Virtual port") > -1 || input.name.indexOf("IAC Driver visuals") > -1 ) {
             let controller = new Virtual(input, output, actions,[]);
             midiDevices.push(controller);
+
             input.onmidimessage = controller.onMIDIMessage;
             return;
         }
