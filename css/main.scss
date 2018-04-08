@@ -1,8 +1,23 @@
+body{
+   font-family: monospace;
+}
+.vexFlow{
+    transform-origin: left;
+    transform: scale(.6);
+}
+.series{
+    font-size:18px;
+}
+.control-box{
+    width: 30%;
+    position: relative;
+    display: inline-block;
+}
 .Dropdown-root {
     position: relative
 }
 .is-container{
-    width:80%;
+    width:95%;
 }
 .Dropdown-control {
     position: relative;
