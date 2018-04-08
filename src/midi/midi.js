@@ -5,6 +5,8 @@ import Virtual from './virtual';
 import Engine from '../components/engine/engine';
 import * as helpers from '../utils/helpers';
 
+
+
 let midiDevices  = [];
 let midi = null;
 function initDevices(actions) {
@@ -34,9 +36,10 @@ function initDevices(actions) {
             midiDevices.push(launchPad);
             input.onmidimessage = launchPad.onMIDIMessage;
             return;
-        }else if (input.name.indexOf("Virtual port") > -1) {
+        }else if (input.name.indexOf("Virtual port") > -1 || input.name.indexOf("IAC Driver visuals") > -1 ) {
             let controller = new Virtual(input, output, actions,[]);
             midiDevices.push(controller);
+
             input.onmidimessage = controller.onMIDIMessage;
             return;
         }
@@ -50,7 +53,7 @@ export default class Midi{
         this.donePlaying = false;
         this.channels_busy = [false,false];
         this.last_channel_played = 0;
-        this.myintervals = [null,null];
+        this.myintervals = [null,null,null,null,null,null,null,null,null,null];
         let that = this;
         if (navigator.requestMIDIAccess) {
             navigator.requestMIDIAccess().then(function(midiAccess){
@@ -73,7 +76,7 @@ export default class Midi{
         if(this.can_send){
             console.log("Playing channel this" + this.last_channel_played);
             this.playChannel(this.last_channel_played,notes,durationValue);
-            this.last_channel_played = (this.last_channel_played+1)%2;
+            this.last_channel_played = (this.last_channel_played+1)%10;
             //this.playChannel(1,notes,durationValue2);
             if((midiDevices[0] instanceof LaunchPadControl)){
                 this.engine.play(notes,durationValue,durationValue2);
