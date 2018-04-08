@@ -16,8 +16,7 @@ class SheetMusic extends React.Component {
         notes.forEach((elem, index) => {
             let length = elem.length;
             let formattedNote = elem.substring(0, length-1).split('-').join("") + "/" + elem.substring(length - 1);
-            console.log(formattedNote)
-            
+           
             try{
 
                 if(elem.indexOf('#')>-1){

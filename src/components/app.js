@@ -228,7 +228,7 @@ a(2n) = -a(n), a(2n+1) = a(n) + 1, a(0)=0. <a href='https://www.youtube.com/watc
                     <p>Series start offset:</p>
                     <Stepper
                         min={0}
-                        max={100} value = {startNote} onChange={(e)=> this._onSelectStart(e)} render={({
+                        max={3000} value = {startNote} onChange={(e)=> this._onSelectStart(e)} render={({
                           getFormProps,
                           getInputProps,
                           getIncrementProps,
@@ -248,7 +248,7 @@ a(2n) = -a(n), a(2n+1) = a(n) + 1, a(0)=0. <a href='https://www.youtube.com/watc
                      <p>Length of series to display:</p>
                      <Stepper
                             min={1}
-                            max={200} value={totalNotes} onChange={(e)=> this._onSelectLength(e)}  render={({
+                            max={1000} value={totalNotes} onChange={(e)=> this._onSelectLength(e)}  render={({
                               getFormProps,
                               getInputProps,
                               getIncrementProps,
