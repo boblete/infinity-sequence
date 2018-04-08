@@ -1,6 +1,7 @@
 body{
    font-family: monospace;
     background-color: lightgrey;
+
 }
 .vexFlow{
     transform-origin: top left;
@@ -11,7 +12,9 @@ body{
 textarea {
     resize: none;
 }
-
+.miditext{
+    width:20px;
+}
 .series{
     font-size:18px;
 }
@@ -20,8 +23,13 @@ textarea {
     position: relative;
     display: inline-block;
 }
+.control-box-inst{
+    width: 20%;
+    position: relative;
+    display: inline-block;
+}
 .control-box-midi{
-    width: 30%;
+    width: 60%;
     position: relative;
     display: inline-block;
 }
