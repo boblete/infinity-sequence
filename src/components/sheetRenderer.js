@@ -11,22 +11,17 @@ class SheetMusic extends React.Component {
 
     initNotesAsVexflowObject(notes) {
         let vexFlowNotes = [];
+        let clef = this.props.octave > 3 ? "treble" : "bass"; 
 
         notes.forEach((elem, index) => {
             let length = elem.length;
             let formattedNote = elem.substring(0, length-1) + "/" + elem.substring(length - 1);
-            if (this.props.octave > 3) {
-                vexFlowNotes.push(new StaveNote({
-                    keys: [formattedNote],
-                    duration: "w",
-                }));
-            } else {
-                vexFlowNotes.push(new StaveNote({
-                    clef: "bass",
-                    keys: [formattedNote],
-                    duration: "w",
-                }));
-            }
+            
+            vexFlowNotes.push(new StaveNote({
+                clef: clef,
+                keys: [formattedNote],
+                duration: "w",
+            }));
         });
 
         return vexFlowNotes;
