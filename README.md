@@ -8,6 +8,7 @@ Nørgård has said that he did not invent the infinity series, but discovered it
 
 # How do I run this?
 ``` npm install or yarn install ```
+
 ``` npm run start or yarn run start ```
 
 <sub><sup>Built at [Music Hack Day London 2018](https://goldsmiths.tech/music)</sup></sub>
