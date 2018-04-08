@@ -9,10 +9,6 @@ class SheetMusic extends React.Component {
         super(props);
     }
 
-    getNotes() {
-        return this.props.notes;
-    }
-
     initNotesAsVexflowObject(notes) {
         let vexFlowNotes = [];
 
@@ -28,29 +24,40 @@ class SheetMusic extends React.Component {
         return vexFlowNotes;
     }
 
-    createStave() {
-        return new Stave(0,0,1200);
-    }
-
-    renderVexFlow() {
-        const chord = this.initNotesAsVexflowObject(this.props.notes);
-
-        const svgContainer = document.createElement('div');
-        const renderer = new Renderer(svgContainer, Renderer.Backends.SVG);
+    createStave(renderer, vexFlowNotes) {
         const ctx = renderer.getContext();
         const stave = new Stave(0, 0, 1200);  // x, y, width
         stave.addClef("treble").setContext(ctx).draw();
-        const bb = Formatter.FormatAndDraw(ctx, stave, chord);
+        return Formatter.FormatAndDraw(ctx, stave, vexFlowNotes);
+    }
+
+    chunkArray(arr, len) {
+        let chunked = [];
+        len = parseInt(len);
+        for (let i = 0; i < arr.length; i += len) {
+            chunked.push(arr.slice(i, i + len));
+        }
+      
+        return chunked;
+    }
+      
+
+    renderVexFlow(notes) {
+        const chord = this.initNotesAsVexflowObject(notes); 
+
+        const svgContainer = document.createElement('div');
+        const renderer = new Renderer(svgContainer, Renderer.Backends.SVG);
+        const renderedStaves = this.createStave(renderer, chord);
         
         const svg = svgContainer.childNodes[0];
         const padding = 10;
         const half = padding / 2;
-        svg.style.height = Math.max(1200, bb.h);
+        svg.style.height = Math.max(1200, renderedStaves.h);
         svg.style.left = "0px";
         svg.style.width = 1200 + "px";
         svg.style.position = "absolute";
         svg.style.overflow = "visible";
-        svgContainer.style.height = Math.max(100, bb.h + padding) + "px";
+        svgContainer.style.height = Math.max(100, renderedStaves.h + padding) + "px";
         svgContainer.style.width = 1200 + "px";
         svgContainer.style.position = "relative";
         svgContainer.style.display = "inlineBlock";
@@ -62,10 +69,18 @@ class SheetMusic extends React.Component {
         this.refs.outer.innerHTML = "";
     }
 
+    renderStaves() {
+        let chunkedNotes = this.chunkArray(this.props.notes, this.props.staveLength);
+        // console.log("cn",chunkedNotes);
+        chunkedNotes.forEach((elem, index) => {
+            this.renderVexFlow(elem);
+        });
+    }
+
     componentDidUpdate() {
         if (this.props.notes.length > 0) {
             this.clearOuterRef()
-            this.renderVexFlow()
+            this.renderStaves();
         }
     }
 

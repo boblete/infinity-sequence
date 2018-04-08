@@ -40,6 +40,7 @@ export default class Midi{
     constructor(){
         this.can_send = false;
         this.engine = new Engine();
+        this.donePlaying = false;
         let that = this;
         if (navigator.requestMIDIAccess) {
             navigator.requestMIDIAccess().then(function(midiAccess){
@@ -59,19 +60,26 @@ export default class Midi{
     play(notes){
         if(this.can_send){
             let that = this;
-            let note = 0;
-            let timeBetweenNotes = 5000;
-            let isRunning = false;
-            let index = 0;
+            that.donePlaying = false;
+            let timeBetweenNotes = 2000;
+            let index = 1;
             let starting_time = new Date().getTime();
-            console.log("Testing");
-            while(index < 5){
-                if(new Date().getTime() - starting_time >= 500){
-                    console.log(index);
-                    starting_time = new Date().getTime();
-                    index++;
+            let note = helpers.convertNoteToMidi(notes[index]);
+            midiDevices[0].sendMsgToOutput(note,timeBetweenNotes,true);
+            this.myInterval = setInterval(function(){
+                midiDevices[0].sendMsgToOutput(note,timeBetweenNotes,false);
+                index++;
+                note = helpers.convertNoteToMidi(notes[index]);
+                console.log(index);
+                midiDevices[0].sendMsgToOutput(note,timeBetweenNotes,true);
+                if(index > 10){
+                    that.donePlaying = true;
                 }
-            }
+                if(that.donePlaying){
+                    midiDevices[0].sendMsgToOutput(note,timeBetweenNotes,false);
+                    clearInterval(that.myInterval);
+                }
+            },timeBetweenNotes);
         }else{
             //this.engine.play(notes);
         }
@@ -93,5 +101,15 @@ export default class Midi{
         if (type == "output") {
             console.log("name", name, "port", port, "state", state);
         }
+    }
+
+    stopPlaying(){
+        console.log("Stop playing");
+        this.engine.stop();
+        clearInterval(this.myInterval);
+        if(midiDevices[0] !== undefined){
+            midiDevices[0].clearButtons();
+        }
+
     }
 }

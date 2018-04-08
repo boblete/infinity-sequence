@@ -17,19 +17,23 @@ a(2n) = -a(n), a(2n+1) = a(n) + 1, a(0)=0.
 
 const NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 const OCTAVES = [1,2,3,4,5,6,7,8];
+const INTERVAL = [-12,-11,-10,-9,-8,-7,-6,-5,-4,-3,-2,-1,0,1,2,3,4,5,6,7,8,9,10,11,12];
+
 class App extends React.Component {
      constructor(props) {
         super();
         this.midi = new Midi();
+        this.midiUpdated = false
         //this.engine = new Engine();
      }
+
     state = {
         staveVisible: false,
         options:NOTES,
         defaultOption:NOTES[0],
         octaveOptions:OCTAVES,
         currentOctaveOption:OCTAVES[3],
-        intervalOptions:OCTAVES,
+        intervalOptions:INTERVAL,
         currentIntervalOption:1,
         octaves:OCTAVES,
         defaultOctaves:OCTAVES[3],
@@ -37,7 +41,9 @@ class App extends React.Component {
         startNote:0,
         currentNote:60,
         currentOption:'C',
-        noteContainer:[]
+        noteContainer:[],
+        durationValue:"4n",
+        durationValue2:"1n"
     }
 
     /*
@@ -55,15 +61,19 @@ const defaultOption = options[0]
 
 
     componentDidUpdate(){
-        this.midi.play(this.state.noteContainer)
-        //this.engine.stop();
+        if(!this.midiUpdated){
+            this.midi.stopPlaying();
+            this.midi.play(this.state.noteContainer);
+            this.midiUpdated = true;
+        }
+
         //this.engine.play(this.state.noteContainer)
     }
 
     componentWillUpdate(nextProps,nextState){
-        console.log(nextState,this.state);
+        // console.log(nextState,this.state);
         if(nextState.currentOption!==this.state.currentOption){
-            console.log('nextState',nextState.currentOption,this.state.currentOption);
+            // console.log('nextState',nextState.currentOption,this.state.currentOption);
             //this.setState()
             this.state.currentOption=nextState.currentOption
             this.getSeries();
@@ -87,6 +97,8 @@ const defaultOption = options[0]
         }
     }
     getSeries(){
+        this.midiUpdated = false;
+
         var pn = [0,this.state.currentIntervalOption]
         var endSeries = this.state.startNote+ this.state.totalNotes;
         for(var i = 1; i<=endSeries;i++){
@@ -97,16 +109,16 @@ const defaultOption = options[0]
             pn[2*i] = pn[2*i -2] - (pn[i] - pn[i-1])
             pn[2*i +1] = pn[2*i -1] + (pn[i] - pn[i-1])
         */
-        console.log(pn)
-        console.log(this.state.currentOption , OCTAVES[3])
+        // console.log(pn)
+        // console.log(this.state.currentOption , OCTAVES[3])
         var currentNote=convertNoteToMidi(this.state.currentOption + this.state.currentOctaveOption);
         this.setState({currentNote, currentNote});
-        console.log(pn);
+        // console.log(pn);
         var noteContainer = [];
         for(var j = this.state.startNote ; j<=endSeries;j++  ){
             noteContainer.push(convertMidiToNote(currentNote - pn[j]));
         }
-        //console.log(noteContainer);
+        console.log(noteContainer);
         this.setState({noteContainer , noteContainer});
       //  this.renderSeries();
     }
@@ -114,42 +126,51 @@ const defaultOption = options[0]
     renderSeries() {
         let s = ""
         let noteContainer = this.state.noteContainer;
-        console.log(this.state.noteContainer);
+        // console.log(this.state.noteContainer);
         for(var k = 0 ; k <noteContainer.length; k++){
             s += noteContainer[k]+ ", ";
         }
         return s;
     }
     _onSelect(e){
-        console.log(e,this);
+        // console.log(e,this);
         let currentOption = e.value;
         this.setState({currentOption , currentOption});
     }
      _onSelectOctave(e){
-        console.log(e,this);
+        // console.log(e,this);
         let currentOctaveOption = e.value;
         this.setState({currentOctaveOption , currentOctaveOption});
     }
      _onSelectInterval(e){
-        console.log(e,this);
+        // console.log(e,this);
         let currentIntervalOption = e.value;
         this.setState({currentIntervalOption , currentIntervalOption});
     }
     _onSelectStart(e){
-        console.log(e)
+        // console.log(e)
          let startNote = e
         this.setState({startNote , startNote});
     }
      _onSelectLength(e){
-        console.log(e)
+        // console.log(e)
         let totalNotes = e
         this.setState({totalNotes , totalNotes});
     }
+    _handleChange(e){
+
+     this.setState({durationValue: e.target.value});
+    }
+     _handleChange2(e){
+
+     this.setState({durationValue2: e.target.value});
+    }
+
     render() {
         let { noteContainer,staveVisible,options ,defaultOption,totalNotes,startNote,currentOption,octaveOptions,currentOctaveOption,intervalOptions,currentIntervalOption} = this.state;
         let { actions, visibleInstrument, volume, inputMode, registerOfflineHook, registerOnlineHook } = this.props;
         //let _onSelect = this._onSelect
-        console.log('render');
+        // console.log('render');
         return (
             <div className='is-container'>
                 <h1>Infinity series</h1>
@@ -198,12 +219,18 @@ const defaultOption = options[0]
                                   +
                                 </button>
                               </form>}/>
+
+
+                     <p>duration1:</p>
+                     <textarea value={this.state.durationValue} onChange={(e)=>this._handleChange(e)} />
+                     <p>duration2:</p>
+                     <textarea value={this.state.durationValue2} onChange={(e)=>this._handleChange2(e)} />
                 </div>
                 <div className='series'>
                     { this.renderSeries() }
                 </div>
                 <div className="vexFlow">
-                    <SheetMusic notes={noteContainer}/>
+                    <SheetMusic notes={noteContainer} staveLength="25"/>
                 </div>
             </div>
         )
