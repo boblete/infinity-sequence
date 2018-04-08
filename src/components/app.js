@@ -123,7 +123,15 @@ const defaultOption = options[0]
         // console.log(pn);
         var noteContainer = [];
         for(var j = this.state.startNote ; j<endSeries;j++  ){
-            noteContainer.push(convertMidiToNote(currentNote - pn[j]));
+            //this will error if the end note is a negative midi number - if midi is a negative then it breaks - 
+            //need to maybe set the midi note to a real midi value without breakind the series 
+            let midiValue = currentNote - pn[j]
+            while(midiValue<0){
+                console.log(midiValue)
+                midiValue+=12
+            }
+
+            noteContainer.push(convertMidiToNote(midiValue));
         }
         console.log(noteContainer);
         this.setState({noteContainer , noteContainer});

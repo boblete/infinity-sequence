@@ -2,7 +2,7 @@ import React from 'react';
 import Vex from 'vexflow';
 // import { convertMidiToNote } from './utils/helpers';
 
-const { Renderer, Stave, StaveNote, StaveTie, Voice, Formatter, Beam, Accidental } = Vex.Flow;
+const { Renderer, Stave, StaveNote, StaveTie, Voice, Formatter, Beam, Accidental,addAccidental } = Vex.Flow;
 
 class SheetMusic extends React.Component {
     constructor(props) {
@@ -15,19 +15,27 @@ class SheetMusic extends React.Component {
 
         notes.forEach((elem, index) => {
             let length = elem.length;
-            let formattedNote = elem.substring(0, length-1) + "/" + elem.substring(length - 1);
+            let formattedNote = elem.substring(0, length-1).split('-').join("") + "/" + elem.substring(length - 1);
             console.log(formattedNote)
-            if(formattedNote.indexOf('-')){
-                //continue;
-            }
+            
             try{
-                vexFlowNotes.push(new StaveNote({
-                    clef: clef,
-                    keys: [formattedNote],
-                    duration: "w",
-                }));
+
+                if(elem.indexOf('#')>-1){
+                    vexFlowNotes.push(new StaveNote({
+                        clef: clef,
+                        keys: [formattedNote],
+                        duration: "w",
+                    }).addAccidental(0, new Accidental("#")) ) ;
+                   
+                }else{
+                    vexFlowNotes.push(new StaveNote({
+                        clef: clef,
+                        keys: [formattedNote],
+                        duration: "w",
+                    })) ;
+                }
             }catch(e){
-                console.warn('badNote')
+                console.warn('badNote',elem , e)
             }
         });
 
